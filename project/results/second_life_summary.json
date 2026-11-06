@@ -1,0 +1,118 @@
+{
+  "all": {
+    "decisions": 101,
+    "agreement": 0.8317,
+    "conservative_errors": 7,
+    "optimistic_errors": 10,
+    "agreement_when_high_confidence": 0.8947,
+    "low_confidence_share": 0.4356,
+    "errors_flagged_low_confidence": 0.6471,
+    "confusion": {
+      "A": {
+        "A": 24,
+        "B": 3,
+        "C": 0,
+        "D": 0
+      },
+      "B": {
+        "A": 2,
+        "B": 21,
+        "C": 3,
+        "D": 0
+      },
+      "C": {
+        "A": 0,
+        "B": 1,
+        "C": 21,
+        "D": 4
+      },
+      "D": {
+        "A": 0,
+        "B": 0,
+        "C": 4,
+        "D": 18
+      }
+    }
+  },
+  "calce": {
+    "decisions": 60,
+    "agreement": 0.8,
+    "conservative_errors": 5,
+    "optimistic_errors": 7,
+    "agreement_when_high_confidence": 0.8788,
+    "low_confidence_share": 0.45,
+    "errors_flagged_low_confidence": 0.6667,
+    "confusion": {
+      "A": {
+        "A": 9,
+        "B": 2,
+        "C": 0,
+        "D": 0
+      },
+      "B": {
+        "A": 1,
+        "B": 7,
+        "C": 1,
+        "D": 0
+      },
+      "C": {
+        "A": 0,
+        "B": 0,
+        "C": 15,
+        "D": 4
+      },
+      "D": {
+        "A": 0,
+        "B": 0,
+        "C": 4,
+        "D": 17
+      }
+    }
+  },
+  "nasa": {
+    "decisions": 41,
+    "agreement": 0.878,
+    "conservative_errors": 2,
+    "optimistic_errors": 3,
+    "agreement_when_high_confidence": 0.9167,
+    "low_confidence_share": 0.4146,
+    "errors_flagged_low_confidence": 0.6,
+    "confusion": {
+      "A": {
+        "A": 15,
+        "B": 1,
+        "C": 0,
+        "D": 0
+      },
+      "B": {
+        "A": 1,
+        "B": 14,
+        "C": 2,
+        "D": 0
+      },
+      "C": {
+        "A": 0,
+        "B": 1,
+        "C": 6,
+        "D": 0
+      },
+      "D": {
+        "A": 0,
+        "B": 0,
+        "C": 0,
+        "D": 1
+      }
+    }
+  },
+  "at_80pct_retirement": {
+    "cells": 8,
+    "grades": {
+      "B": 7,
+      "A": 1
+    },
+    "mean_service_years": 0.715,
+    "co2_avoided_kg_per_pack": 3592.0375,
+    "value_usd_per_pack": 2478.375
+  },
+  "second_life_cycles_mae_calce": 33.6495
+}

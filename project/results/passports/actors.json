@@ -1,0 +1,38 @@
+{
+  "MFR-01": {
+    "actor_id": "MFR-01",
+    "name": "DemoCell Manufacturing (test-cell supplier)",
+    "role": "manufacturer",
+    "public_key": "743Lb18SaawTkqgDI0TWbJ1WjFZ7Ok9Ym/kWVrEEwHc="
+  },
+  "OEM-01": {
+    "actor_id": "OEM-01",
+    "name": "EV maker (first-life operator)",
+    "role": "oem",
+    "public_key": "sLbInJwEoUBzmzME0KBBswUtmtI6RbEmlX9HXuATroU="
+  },
+  "BMS-01": {
+    "actor_id": "BMS-01",
+    "name": "On-board battery management system",
+    "role": "bms",
+    "public_key": "PO0KsJAKLOu0vaVCWa8lLG60eFl7plnJua3PZXPV2Jg="
+  },
+  "AI-ASSESSOR": {
+    "actor_id": "AI-ASSESSOR",
+    "name": "AI lifecycle assessor (this project)",
+    "role": "assessor",
+    "public_key": "2d/b8RHqXj5y7CVi+9mf/iOwbe3otPYmfv2StZBl5Ek="
+  },
+  "REP-01": {
+    "actor_id": "REP-01",
+    "name": "Second-life energy-storage integrator",
+    "role": "repurposer",
+    "public_key": "lvKyeT8AeOGr3hFcQJ+c5upbKDjyxX1w72yjG/7PgtQ="
+  },
+  "REC-01": {
+    "actor_id": "REC-01",
+    "name": "Certified battery recycler",
+    "role": "recycler",
+    "public_key": "uvvgu5Q2TlTH/xh4Z48pUyiLFFXOi7G099y9/1IXjC0="
+  }
+}

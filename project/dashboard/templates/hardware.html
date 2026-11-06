@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-head">
+  <h1>Connect a real battery</h1>
+  <p class="lede">Today the system learns from laboratory datasets. This page shows the next step: a monitoring board on a real cell streams voltage, current and temperature every second, the same health indicators are computed live, and each finished cycle becomes a signed passport event. Run the built-in simulated board, or plug in an ESP32 board over USB.</p>
+</section>
+
+<section class="console" aria-labelledby="consoleTitle">
+  <div class="console-head">
+    <div>
+      <h2 id="consoleTitle">Live telemetry</h2>
+      <p class="console-status" id="hwStatus" aria-live="polite">Idle. Start the simulated board or connect a device.</p>
+    </div>
+    <div class="console-controls">
+      <label class="mini">Speed
+        <select id="hwSpeed" aria-label="Simulation speed">
+          <option value="300">300× (about 45 s a cycle)</option>
+          <option value="900" selected>900× (about 15 s a cycle)</option>
+          <option value="2400">2400× (about 6 s a cycle)</option>
+        </select>
+      </label>
+      <label class="mini">Simulated SOH
+        <select id="hwSoh" aria-label="State of health of the simulated cell">
+          <option value="0.95">95% (fresh)</option>
+          <option value="0.84" selected>84% (end of first life)</option>
+          <option value="0.72">72% (second life)</option>
+          <option value="0.58">58% (worn out)</option>
+        </select>
+      </label>
+      <button class="primary" type="button" id="hwSim">Run simulated board</button>
+      <button class="ghost" type="button" id="hwSerial">Connect board (USB)</button>
+      <button class="ghost" type="button" id="hwStop" disabled>Stop</button>
+    </div>
+  </div>
+  <div class="readouts" id="hwReadouts">
+    <div class="ro"><span>Voltage</span><b id="roV">–</b></div>
+    <div class="ro"><span>Current</span><b id="roI">–</b></div>
+    <div class="ro"><span>Temperature</span><b id="roT">–</b></div>
+    <div class="ro"><span>Phase</span><b id="roP">–</b></div>
+    <div class="ro"><span>Charge counted</span><b id="roQ">–</b></div>
+  </div>
+  <div class="grid g3 console-charts">
+    <div class="panel"><h3>Voltage (V)</h3><div id="hwV" class="chart short"></div></div>
+    <div class="panel"><h3>Current (A), + charging</h3><div id="hwI" class="chart short"></div></div>
+    <div class="panel"><h3>Temperature (°C)</h3><div id="hwT" class="chart short"></div></div>
+  </div>
+</section>
+
+<section class="section">
+  <header><h2>Cycles extracted live</h2><p>Each completed charge and discharge becomes one row, computed in your browser exactly as the Python ingest does it.</p></header>
+  <div class="grid g2">
+    <div class="panel flush table-wrap">
+      <table><thead><tr><th class="num">Cycle</th><th class="num">Capacity</th><th class="num">SOH</th><th class="num">CC charge</th><th class="num">Resistance</th><th>Grade</th></tr></thead>
+        <tbody id="hwCycles"><tr><td colspan="6" class="empty">No completed cycle yet. A cycle needs one full charge and one full discharge.</td></tr></tbody></table>
+    </div>
+    <div class="panel"><h3>Passport event this cycle would create</h3>
+      <p class="note">On a real board this record is signed with the board's own Ed25519 key (role: bms) and appended to the battery's passport.</p>
+      <pre class="event-preview" id="hwEvent">Waiting for the first complete cycle.</pre>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <header><h2>Bench run already recorded</h2><p>A six-cycle run of the simulated board was ingested by the Python pipeline and signed into its own passport.</p></header>
+  <div class="grid g2">
+    <div class="panel" id="benchCard"></div>
+    <div class="panel"><h3>Capacity per cycle</h3><div id="benchChart" class="chart short"></div></div>
+  </div>
+</section>
+
+<section class="section">
+  <header><h2>Roadmap</h2><p>The software is ready for each phase; only the hardware changes.</p></header>
+  <ol class="roadmap">
+    <li><b>Bench logger, one 18650 cell</b><span>ESP32, INA219 current sensor, DS18B20 temperature probe, TP4056 charger, MOSFET load. About INR 1,500. Firmware is in <code>hardware/firmware</code>.</span></li>
+    <li><b>Real battery management systems</b><span>Read pack voltage, current, temperature and the BMS's own SOH over CAN bus or Modbus, mapped to the same JSON protocol.</span></li>
+    <li><b>Fleet and passport registry</b><span>MQTT from every pack to a time-series database, this pipeline as a scheduled job, and each passport's chain head anchored in the battery passport registry.</span></li>
+  </ol>
+</section>
+
+<section class="section">
+  <header><h2>How it fits together</h2></header>
+  <div class="panel"><img class="diagram" src="{{ url_for('static', filename='img/hardware_architecture.png') }}" alt="Hardware architecture: cell and sensors feed an ESP32, which streams JSON telemetry to the ingest step; health indicators feed the SOH, RUL and grading models; signed events go into the Digital Battery Passport shown on the website."></div>
+</section>
+
+<section class="section">
+  <header><h2>Phase 1 parts list</h2><p>Approximate prices in India. Full wiring and safety rules are in <code>docs/hardware.md</code>.</p></header>
+  <div class="grid g2">
+    <div class="panel flush table-wrap"><table>
+      <thead><tr><th>Part</th><th>Purpose</th><th class="num">Approx. price</th></tr></thead>
+      <tbody>
+        <tr><td>ESP32 DevKit (WROOM-32)</td><td>Controller, USB serial, Wi-Fi</td><td class="num">INR 350-450</td></tr>
+        <tr><td>INA219 module</td><td>Bidirectional current and voltage</td><td class="num">INR 150-250</td></tr>
+        <tr><td>DS18B20 probe + 4.7 kΩ</td><td>Cell temperature</td><td class="num">INR 100-150</td></tr>
+        <tr><td>TP4056 with protection</td><td>CC-CV charger, 1 A</td><td class="num">INR 40-80</td></tr>
+        <tr><td>IRLZ44N + 3.9 Ω 10 W resistor</td><td>Switched 1 A discharge load</td><td class="num">INR 80-120</td></tr>
+        <tr><td>18650 holder, cell, fuse, wires</td><td>Test cell and protection</td><td class="num">INR 200-400</td></tr>
+        <tr><td>Fire-safe box or LiPo bag</td><td>Safe unattended cycling</td><td class="num">INR 200-300</td></tr>
+      </tbody></table></div>
+    <div class="panel"><h3>Safety rules built into the firmware</h3>
+      <ul class="plain">
+        <li>Hard stop above 4.25 V, below 2.50 V, or above 55 °C: charger and load both switched off.</li>
+        <li>Charger and load are never on together; the firmware switches both off before changing state.</li>
+        <li>Fuse on the cell's positive lead; protected cells or a protection board only.</li>
+        <li>Cycle inside a fire-safe container; never charge a swollen, dented or hot cell.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/hardware.js') }}"></script>{% endblock %}

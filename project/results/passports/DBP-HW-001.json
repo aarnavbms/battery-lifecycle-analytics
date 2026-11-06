@@ -1,0 +1,211 @@
+{
+  "schema_version": "1.0",
+  "passport_id": "DBP-HW-001",
+  "battery_id": "HW-001",
+  "access_level": "full",
+  "head_hash": "8248637aaa2cdf0ab2105e627831d3edbdf24d6d325962d71cbff890caf41841",
+  "sections": {
+    "general_information": {
+      "model": "HW-001",
+      "manufacturer": "unknown (bench cell)",
+      "manufacture_date": "2026-11-06",
+      "chemistry": "Li-ion 18650 (bench cell)",
+      "form_factor": "18650 cylindrical",
+      "rated_capacity_ah": 2.0,
+      "nominal_voltage_v": 3.7,
+      "manufacturing_site": null
+    },
+    "carbon_footprint": null,
+    "performance_and_durability": {
+      "rated_capacity_ah": 2.0,
+      "initial_capacity_ah": null,
+      "initial_resistance_ohm": null,
+      "expected_cycle_life": null,
+      "cut_off_voltage_v": null
+    },
+    "battery_status": {
+      "status": "original",
+      "events": 8,
+      "last_event": "SECOND_LIFE_GRADING"
+    },
+    "state_of_health": {
+      "latest_assessment": {
+        "cycle": 6,
+        "soh": 0.8363,
+        "soh_lo": 0.8263,
+        "soh_hi": 0.8463,
+        "resistance_growth": 1.12,
+        "capacity_ah": 1.6725,
+        "temp_max_c": 26.52,
+        "method": "coulomb counting on board telemetry (measured, +/-1% sensor tolerance)"
+      },
+      "latest_rul": null
+    },
+    "lifecycle_decision": {
+      "cycle": 6,
+      "grade": "A",
+      "application": "EV re-use / light e-mobility",
+      "confidence": "high",
+      "recommendation": "Repurpose for EV re-use / light e-mobility"
+    }
+  },
+  "events": [
+    {
+      "index": 0,
+      "timestamp": "2026-11-06T06:52:19",
+      "type": "MANUFACTURED",
+      "actor_id": "MFR-01",
+      "role": "manufacturer",
+      "data": {
+        "model": "HW-001",
+        "chemistry": "Li-ion 18650 (bench cell)",
+        "form_factor": "18650 cylindrical",
+        "rated_capacity_ah": 2.0,
+        "nominal_voltage_v": 3.7,
+        "manufacturer": "unknown (bench cell)",
+        "manufacture_date": "2026-11-06",
+        "data_source": "simulated monitoring board (SIM-01)"
+      },
+      "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "hash": "41061868b72f53c1337331775c3706c872e75eb1cf0aa8476b04f3376a89db34",
+      "signature": "wVU0sOnvqzowSbMZTqjhv75qziLbdK99sZDzwpE/jJubYFVHqzPiv7AWnosP3jZ6bG+HWXiCxgB+yZBsDLrDCQ=="
+    },
+    {
+      "index": 1,
+      "timestamp": "2026-11-06T06:52:20",
+      "type": "SOH_ASSESSMENT",
+      "actor_id": "BMS-01",
+      "role": "bms",
+      "data": {
+        "cycle": 1,
+        "soh": 0.8564,
+        "soh_lo": 0.8464,
+        "soh_hi": 0.8664,
+        "resistance_growth": 1.0,
+        "capacity_ah": 1.7128,
+        "temp_max_c": 26.43,
+        "method": "coulomb counting on board telemetry (measured, +/-1% sensor tolerance)"
+      },
+      "prev_hash": "41061868b72f53c1337331775c3706c872e75eb1cf0aa8476b04f3376a89db34",
+      "hash": "b3c8701f3d0c3363595d7dc6f063a18e5b4f4b2f4ac81c0d768b27cc423c535e",
+      "signature": "h5irP2AWE9Qeqm77iTjRHvyN6QtbkTXga3Vm+UodhdnsrJzl+biOd+sM7xjSg6TTemr0Wqnd3Mcwch/lBBnJCg=="
+    },
+    {
+      "index": 2,
+      "timestamp": "2026-11-06T06:52:21",
+      "type": "SOH_ASSESSMENT",
+      "actor_id": "BMS-01",
+      "role": "bms",
+      "data": {
+        "cycle": 2,
+        "soh": 0.8524,
+        "soh_lo": 0.8424,
+        "soh_hi": 0.8624,
+        "resistance_growth": 1.009,
+        "capacity_ah": 1.7047,
+        "temp_max_c": 26.45,
+        "method": "coulomb counting on board telemetry (measured, +/-1% sensor tolerance)"
+      },
+      "prev_hash": "b3c8701f3d0c3363595d7dc6f063a18e5b4f4b2f4ac81c0d768b27cc423c535e",
+      "hash": "4346e1442f5f7cd3f7f864712ecd9f0a2733c1e650ac5a0e0151f0ffc5471ce7",
+      "signature": "2QBNYs9uwNfZ8agf9p+fyemUBY0MMdxHpKNcaE+MFuaaE25Y7KDZ4JblICkstB6ejIhvRnBpv9cZ78oCJaKiDQ=="
+    },
+    {
+      "index": 3,
+      "timestamp": "2026-11-06T06:52:22",
+      "type": "SOH_ASSESSMENT",
+      "actor_id": "BMS-01",
+      "role": "bms",
+      "data": {
+        "cycle": 3,
+        "soh": 0.8483,
+        "soh_lo": 0.8383,
+        "soh_hi": 0.8583,
+        "resistance_growth": 1.035,
+        "capacity_ah": 1.6967,
+        "temp_max_c": 26.5,
+        "method": "coulomb counting on board telemetry (measured, +/-1% sensor tolerance)"
+      },
+      "prev_hash": "4346e1442f5f7cd3f7f864712ecd9f0a2733c1e650ac5a0e0151f0ffc5471ce7",
+      "hash": "032a8e60e77d312dc576066b0e258554e370a6dc8d560f9b58beaa253a1fac27",
+      "signature": "1X6vN6waOaID4RUM3Gns2Pszk9XJStDkOpS7oiXYjhfKdaJ28fR5wZ2Z0BhaqxIqKZYAOdSbZ6RKKyxdC9ZoBQ=="
+    },
+    {
+      "index": 4,
+      "timestamp": "2026-11-06T06:52:23",
+      "type": "SOH_ASSESSMENT",
+      "actor_id": "BMS-01",
+      "role": "bms",
+      "data": {
+        "cycle": 4,
+        "soh": 0.8443,
+        "soh_lo": 0.8343,
+        "soh_hi": 0.8543,
+        "resistance_growth": 1.037,
+        "capacity_ah": 1.6886,
+        "temp_max_c": 26.49,
+        "method": "coulomb counting on board telemetry (measured, +/-1% sensor tolerance)"
+      },
+      "prev_hash": "032a8e60e77d312dc576066b0e258554e370a6dc8d560f9b58beaa253a1fac27",
+      "hash": "ef0476c6da284041ed161830a6341228c7d0610453ac4f9e816126a4a222ad54",
+      "signature": "DOWsE1q9HuJFlVEl4XHF7ev/wfRL/JFcTP0w4ECj163wq49Y7oOcCxv3P61BE/E6H6LjtskuEUYGHRwVNPDvDw=="
+    },
+    {
+      "index": 5,
+      "timestamp": "2026-11-06T06:52:24",
+      "type": "SOH_ASSESSMENT",
+      "actor_id": "BMS-01",
+      "role": "bms",
+      "data": {
+        "cycle": 5,
+        "soh": 0.8403,
+        "soh_lo": 0.8303,
+        "soh_hi": 0.8503,
+        "resistance_growth": 1.026,
+        "capacity_ah": 1.6806,
+        "temp_max_c": 26.51,
+        "method": "coulomb counting on board telemetry (measured, +/-1% sensor tolerance)"
+      },
+      "prev_hash": "ef0476c6da284041ed161830a6341228c7d0610453ac4f9e816126a4a222ad54",
+      "hash": "e94cd8bde7ef711f10d52d6b30b5f83857dab9ca06e5047e08e9a22e0eb3a4d4",
+      "signature": "gk0ff+qW0G3aeFYME7aAlBlL/G4a3+dQvS1F6DZ7V8SwJZxNixA4o+EGkw+QL0YVPYcrD+gCy2qdD8Yroc+0BQ=="
+    },
+    {
+      "index": 6,
+      "timestamp": "2026-11-06T06:52:25",
+      "type": "SOH_ASSESSMENT",
+      "actor_id": "BMS-01",
+      "role": "bms",
+      "data": {
+        "cycle": 6,
+        "soh": 0.8363,
+        "soh_lo": 0.8263,
+        "soh_hi": 0.8463,
+        "resistance_growth": 1.12,
+        "capacity_ah": 1.6725,
+        "temp_max_c": 26.52,
+        "method": "coulomb counting on board telemetry (measured, +/-1% sensor tolerance)"
+      },
+      "prev_hash": "e94cd8bde7ef711f10d52d6b30b5f83857dab9ca06e5047e08e9a22e0eb3a4d4",
+      "hash": "1ef2f21428e43828c97df1f59b2b59ed8b31138658c6efe3b388683e1a9c0dc9",
+      "signature": "IrTUNs6KauuIDDKmejckTlhXIcq7C87DWibkmWCy3rDKP8tY3KlrEjXXNzRF6HFZSeHatXukM+7ej0R4G6UTAw=="
+    },
+    {
+      "index": 7,
+      "timestamp": "2026-11-06T06:52:27",
+      "type": "SECOND_LIFE_GRADING",
+      "actor_id": "AI-ASSESSOR",
+      "role": "assessor",
+      "data": {
+        "cycle": 6,
+        "grade": "A",
+        "application": "EV re-use / light e-mobility",
+        "confidence": "high",
+        "recommendation": "Repurpose for EV re-use / light e-mobility"
+      },
+      "prev_hash": "1ef2f21428e43828c97df1f59b2b59ed8b31138658c6efe3b388683e1a9c0dc9",
+      "hash": "8248637aaa2cdf0ab2105e627831d3edbdf24d6d325962d71cbff890caf41841",
+      "signature": "cuMooBx8OvPEpM6EDr8w9/x6OioYDcVNe6bULViVbV/rmCNCF4Eo9Z+A/h7JkHJwniWUM4lAKI/ACi7Vwut9Dg=="
+    }
+  ]
+}

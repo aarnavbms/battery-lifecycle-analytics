@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+data/raw/
+results/keys/
+.ipynb_checkpoints/
+.vscode/
+results/models/
+hardware/sample_logs/*.jsonl
+data/processed/hardware_cycles.csv

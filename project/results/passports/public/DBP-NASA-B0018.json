@@ -1,0 +1,120 @@
+{
+  "schema_version": "1.0",
+  "passport_id": "DBP-NASA-B0018",
+  "battery_id": "B0018",
+  "access_level": "public",
+  "head_hash": "5a1742bd630a87f5019c983440f6174dbaab8a5b091b91c46e711b24f3d915a6",
+  "sections": {
+    "general_information": {
+      "model": "B0018",
+      "manufacturer": "Unknown (NASA Ames test cells)",
+      "manufacture_date": "2008-06-07",
+      "chemistry": "Li-ion (LiCoO2-based 18650)",
+      "form_factor": "18650 cylindrical",
+      "rated_capacity_ah": 2.0,
+      "nominal_voltage_v": 3.7,
+      "manufacturing_site": "not disclosed (laboratory test cell)"
+    },
+    "carbon_footprint": {
+      "kgco2e_per_kwh": 75.0,
+      "total_kgco2e": 0.555,
+      "basis": "assumed mid value of published 61-106 kg CO2e/kWh (IVL)"
+    },
+    "performance_and_durability": {
+      "rated_capacity_ah": 2.0,
+      "initial_capacity_ah": 1.8396,
+      "initial_resistance_ohm": 0.152,
+      "expected_cycle_life": null,
+      "cut_off_voltage_v": null
+    },
+    "battery_status": {
+      "status": "repurposed",
+      "events": 14,
+      "last_event": "SOH_ASSESSMENT"
+    }
+  },
+  "events": [
+    {
+      "index": 0,
+      "timestamp": "2008-06-07T15:15:28",
+      "type": "MANUFACTURED",
+      "actor_id": "MFR-01",
+      "role": "manufacturer",
+      "data": {
+        "model": "B0018",
+        "chemistry": "Li-ion (LiCoO2-based 18650)",
+        "form_factor": "18650 cylindrical",
+        "rated_capacity_ah": 2.0,
+        "nominal_voltage_v": 3.7,
+        "manufacturer": "Unknown (NASA Ames test cells)",
+        "manufacture_date": "2008-06-07",
+        "manufacturing_site": "not disclosed (laboratory test cell)",
+        "initial_capacity_ah": 1.8396,
+        "initial_resistance_ohm": 0.152,
+        "expected_cycle_life": null,
+        "data_source": "B. Saha and K. Goebel (2007). Battery Data Set, NASA Ames Prognostics Data Repository"
+      },
+      "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "hash": "c08d69952ba1fd78e689929eca257eff638d31ce64a53cd6a757e6fd02ace135",
+      "signature": "1Gd4O9L8hYvgOp+YkghymW17rdvpRF58zhD8a1dnV2H5yEKe71DiZgDOXCsFwkD059NLUsorKXQrf373At91Dw=="
+    },
+    {
+      "index": 1,
+      "timestamp": "2008-06-08T15:15:28",
+      "type": "CARBON_FOOTPRINT_DECLARED",
+      "actor_id": "MFR-01",
+      "role": "manufacturer",
+      "data": {
+        "kgco2e_per_kwh": 75.0,
+        "total_kgco2e": 0.555,
+        "basis": "assumed mid value of published 61-106 kg CO2e/kWh (IVL)"
+      },
+      "prev_hash": "c08d69952ba1fd78e689929eca257eff638d31ce64a53cd6a757e6fd02ace135",
+      "hash": "911a8b26bbecaaf392366f27a3e2b46dbb8295d5d5c5bf18d45445648eb55701",
+      "signature": "WVQzVttmrFdJckdrKh4d0NxYvUPwUX9TGxDzlP5Y8TTgDgUrdf9QYJg1IgXxdgc76Aldj5BAz7l1wFfYkIlcBg=="
+    },
+    {
+      "index": 2,
+      "timestamp": "2008-07-07T15:15:28",
+      "type": "FIRST_LIFE_START",
+      "actor_id": "OEM-01",
+      "role": "oem",
+      "data": {
+        "application": "EV traction (laboratory ageing test)",
+        "ambient_c": 24.0
+      },
+      "prev_hash": "911a8b26bbecaaf392366f27a3e2b46dbb8295d5d5c5bf18d45445648eb55701",
+      "hash": "0198c6ce35bcb29dc0c3328201b713aac431c8f1f987a8d5200b89befa672972",
+      "signature": "WwHDUflxyJwL0k/MW7BB5DDNaubt7FR/sLncj24qvIS1L3rvFmf+Aaqp6P3txmpRHQMLj//+EaDpp4fh7fIDBg=="
+    },
+    {
+      "index": 7,
+      "timestamp": "2008-08-02T05:03:55",
+      "type": "FIRST_LIFE_RETIRED",
+      "actor_id": "OEM-01",
+      "role": "oem",
+      "data": {
+        "cycle": 59,
+        "reason": "SOH reached 80%"
+      },
+      "prev_hash": "fe4c07c162409adb8fe55482690bbe086bee2e57545010123b79ca2b8260b92b",
+      "hash": "817cebf95e1b94131c48f9fad4c592c9efdfc0474159c85482e055df91c7aca4",
+      "signature": "o68+l3KMjwvVpZPfZPD3yFF5K9xGryj6s52C4AGcfYZ8fmzEHz95yYg4mSuETRbtGOu4SoJ4IDFvqEpt0uBxDA=="
+    },
+    {
+      "index": 10,
+      "timestamp": "2008-08-02T07:03:55",
+      "type": "REPURPOSED",
+      "actor_id": "REP-01",
+      "role": "repurposer",
+      "data": {
+        "cycle": 59,
+        "application": "EV re-use / light e-mobility",
+        "new_status": "repurposed"
+      },
+      "prev_hash": "bb51288c0e575b19c17dcfceda864b01ed5898fa28be004d2b40ffabdb0acd3e",
+      "hash": "002f48f2df46dbef2eb921af2554596a5404e919bee765a239b6e2884709723b",
+      "signature": "qv9rVQuKPWGCIy7wBP3nKiY7Q0HttqEplSTPWB0WkHJm4lUoLQ1ErCKzpTKlEb18HkhrEy4j6xk2V0j+Q8pgDA=="
+    }
+  ]
+}

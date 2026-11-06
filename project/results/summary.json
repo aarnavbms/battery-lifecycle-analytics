@@ -1,0 +1,328 @@
+{
+  "project": "AI-Based Battery Lifecycle Assessment and Second-Life Management Using Digital Battery Passports",
+  "version": "1.0.0",
+  "generated_utc": "2026-11-02T10:42:13+00:00",
+  "thresholds": {
+    "first_life_eol": 0.8,
+    "second_life_floor": 0.6
+  },
+  "data": {
+    "cells": 8,
+    "cycles": 4631,
+    "outliers_removed": 120
+  },
+  "correlations": {
+    "calce": {
+      "cc_charge_time_rel": 0.998,
+      "cv_charge_time_rel": -0.728,
+      "charge_v_rise_rel": 0.975,
+      "resistance_rel": -0.769,
+      "cycle": -0.896,
+      "temp_rise_c": NaN
+    },
+    "nasa": {
+      "cc_charge_time_rel": 0.943,
+      "cv_charge_time_rel": -0.897,
+      "charge_v_rise_rel": 0.934,
+      "resistance_rel": -0.559,
+      "cycle": -0.929,
+      "temp_rise_c": -0.672
+    }
+  },
+  "soh": {
+    "nasa": {
+      "primary_model": "Gradient Boosting",
+      "rmse": 0.02203,
+      "mae": 0.01644,
+      "r2": 0.95079,
+      "coverage_95": 0.94969
+    },
+    "calce": {
+      "primary_model": "Gaussian Process",
+      "rmse": 0.00806,
+      "mae": 0.00469,
+      "r2": 0.99857,
+      "coverage_95": 0.97729
+    }
+  },
+  "rul": {
+    "nasa": {
+      "mae_cycles": 8.166,
+      "mean_life": 71.75,
+      "coverage_80": 0.759
+    },
+    "calce": {
+      "mae_cycles": 46.612,
+      "mean_life": 578.0,
+      "coverage_80": 0.786
+    }
+  },
+  "second_life": {
+    "agreement": 0.8316831683168316,
+    "agreement_high_conf": 0.8947368421052632,
+    "decisions": 101,
+    "second_life_cycles_mae_calce": 33.64949628759514,
+    "at_80pct": {
+      "cells": 8,
+      "grades": {
+        "B": 7,
+        "A": 1
+      },
+      "mean_service_years": 0.715,
+      "co2_avoided_kg_per_pack": 3592.0375,
+      "value_usd_per_pack": 2478.375
+    }
+  },
+  "passports": {
+    "issued": 8,
+    "valid": 8,
+    "events": 164,
+    "folder": "results/passports"
+  },
+  "cells": [
+    {
+      "cell_id": "B0005",
+      "dataset": "nasa",
+      "passport_id": "DBP-NASA-B0005",
+      "cycles": 168,
+      "soh_start": 0.9282,
+      "soh_end": 0.6467,
+      "latest_soh_est": 0.6583,
+      "status": "repurposed",
+      "events": 17,
+      "passport_valid": true,
+      "grade": "B",
+      "application": "Grid / home energy storage",
+      "outliers_removed": 0
+    },
+    {
+      "cell_id": "B0006",
+      "dataset": "nasa",
+      "passport_id": "DBP-NASA-B0006",
+      "cycles": 168,
+      "soh_start": 1.0177,
+      "soh_end": 0.5822,
+      "latest_soh_est": 0.6539,
+      "status": "waste",
+      "events": 19,
+      "passport_valid": true,
+      "grade": "B",
+      "application": "Grid / home energy storage",
+      "outliers_removed": 0
+    },
+    {
+      "cell_id": "B0007",
+      "dataset": "nasa",
+      "passport_id": "DBP-NASA-B0007",
+      "cycles": 168,
+      "soh_start": 0.9455,
+      "soh_end": 0.7032,
+      "latest_soh_est": 0.6923,
+      "status": "repurposed",
+      "events": 18,
+      "passport_valid": true,
+      "grade": "B",
+      "application": "Grid / home energy storage",
+      "outliers_removed": 0
+    },
+    {
+      "cell_id": "B0018",
+      "dataset": "nasa",
+      "passport_id": "DBP-NASA-B0018",
+      "cycles": 132,
+      "soh_start": 0.9275,
+      "soh_end": 0.6774,
+      "latest_soh_est": 0.6926,
+      "status": "repurposed",
+      "events": 14,
+      "passport_valid": true,
+      "grade": "A",
+      "application": "EV re-use / light e-mobility",
+      "outliers_removed": 0
+    },
+    {
+      "cell_id": "CS2_35",
+      "dataset": "calce",
+      "passport_id": "DBP-CALCE-CS2_35",
+      "cycles": 929,
+      "soh_start": 1.035,
+      "soh_end": 0.2798,
+      "latest_soh_est": 0.5905,
+      "status": "waste",
+      "events": 22,
+      "passport_valid": true,
+      "grade": "B",
+      "application": "Grid / home energy storage",
+      "outliers_removed": 32
+    },
+    {
+      "cell_id": "CS2_36",
+      "dataset": "calce",
+      "passport_id": "DBP-CALCE-CS2_36",
+      "cycles": 960,
+      "soh_start": 1.0407,
+      "soh_end": 0.1515,
+      "latest_soh_est": 0.6147,
+      "status": "waste",
+      "events": 24,
+      "passport_valid": true,
+      "grade": "B",
+      "application": "Grid / home energy storage",
+      "outliers_removed": 26
+    },
+    {
+      "cell_id": "CS2_37",
+      "dataset": "calce",
+      "passport_id": "DBP-CALCE-CS2_37",
+      "cycles": 1033,
+      "soh_start": 1.0318,
+      "soh_end": 0.1701,
+      "latest_soh_est": 0.628,
+      "status": "waste",
+      "events": 24,
+      "passport_valid": true,
+      "grade": "B",
+      "application": "Grid / home energy storage",
+      "outliers_removed": 28
+    },
+    {
+      "cell_id": "CS2_38",
+      "dataset": "calce",
+      "passport_id": "DBP-CALCE-CS2_38",
+      "cycles": 1073,
+      "soh_start": 1.0359,
+      "soh_end": 0.2667,
+      "latest_soh_est": 0.5973,
+      "status": "waste",
+      "events": 26,
+      "passport_valid": true,
+      "grade": "B",
+      "application": "Grid / home energy storage",
+      "outliers_removed": 34
+    }
+  ],
+  "data_quality": {
+    "rows": 4631,
+    "cells": [
+      {
+        "dataset": "nasa",
+        "cell_id": "B0005",
+        "cycles": 168,
+        "rated_capacity_ah": 2.0,
+        "soh_start": 0.9282,
+        "soh_end": 0.6625,
+        "soh_min": 0.6437,
+        "missing_pct": {
+          "charge_v_rise_s": 0.6
+        },
+        "resistance_start_ohm": 0.1141
+      },
+      {
+        "dataset": "nasa",
+        "cell_id": "B0006",
+        "cycles": 168,
+        "rated_capacity_ah": 2.0,
+        "soh_start": 1.0177,
+        "soh_end": 0.5928,
+        "soh_min": 0.5769,
+        "missing_pct": {
+          "charge_v_rise_s": 0.6
+        },
+        "resistance_start_ohm": 0.1398
+      },
+      {
+        "dataset": "nasa",
+        "cell_id": "B0007",
+        "cycles": 168,
+        "rated_capacity_ah": 2.0,
+        "soh_start": 0.9455,
+        "soh_end": 0.7162,
+        "soh_min": 0.7002,
+        "missing_pct": {
+          "charge_v_rise_s": 0.6
+        },
+        "resistance_start_ohm": 0.0997
+      },
+      {
+        "dataset": "nasa",
+        "cell_id": "B0018",
+        "cycles": 132,
+        "rated_capacity_ah": 2.0,
+        "soh_start": 0.9275,
+        "soh_end": 0.6705,
+        "soh_min": 0.6705,
+        "missing_pct": {},
+        "resistance_start_ohm": 0.155
+      },
+      {
+        "dataset": "calce",
+        "cell_id": "CS2_35",
+        "cycles": 929,
+        "rated_capacity_ah": 1.1,
+        "soh_start": 1.035,
+        "soh_end": 0.2741,
+        "soh_min": 0.2207,
+        "missing_pct": {
+          "charge_v_rise_s": 9.6,
+          "temp_max_c": 100.0,
+          "temp_rise_c": 100.0,
+          "ambient_c": 100.0
+        },
+        "resistance_start_ohm": 0.0932
+      },
+      {
+        "dataset": "calce",
+        "cell_id": "CS2_36",
+        "cycles": 960,
+        "rated_capacity_ah": 1.1,
+        "soh_start": 1.0407,
+        "soh_end": 0.1547,
+        "soh_min": 0.1504,
+        "missing_pct": {
+          "charge_v_rise_s": 12.9,
+          "temp_max_c": 100.0,
+          "temp_rise_c": 100.0,
+          "ambient_c": 100.0
+        },
+        "resistance_start_ohm": 0.0916
+      },
+      {
+        "dataset": "calce",
+        "cell_id": "CS2_37",
+        "cycles": 1033,
+        "rated_capacity_ah": 1.1,
+        "soh_start": 1.0318,
+        "soh_end": 0.1717,
+        "soh_min": 0.1638,
+        "missing_pct": {
+          "charge_v_rise_s": 9.2,
+          "temp_max_c": 100.0,
+          "temp_rise_c": 100.0,
+          "ambient_c": 100.0
+        },
+        "resistance_start_ohm": 0.092
+      },
+      {
+        "dataset": "calce",
+        "cell_id": "CS2_38",
+        "cycles": 1073,
+        "rated_capacity_ah": 1.1,
+        "soh_start": 1.0359,
+        "soh_end": 0.2618,
+        "soh_min": 0.1844,
+        "missing_pct": {
+          "charge_v_rise_s": 9.4,
+          "temp_max_c": 100.0,
+          "temp_rise_c": 100.0,
+          "ambient_c": 100.0
+        },
+        "resistance_start_ohm": 0.1029
+      }
+    ],
+    "datasets": {
+      "nasa": "NASA PCoE",
+      "calce": "CALCE CS2"
+    }
+  },
+  "runtime_s": 0.6
+}

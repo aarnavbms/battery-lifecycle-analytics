@@ -1,0 +1,123 @@
+{
+  "rows": 4631,
+  "cells": [
+    {
+      "dataset": "nasa",
+      "cell_id": "B0005",
+      "cycles": 168,
+      "rated_capacity_ah": 2.0,
+      "soh_start": 0.9282,
+      "soh_end": 0.6625,
+      "soh_min": 0.6437,
+      "missing_pct": {
+        "charge_v_rise_s": 0.6
+      },
+      "resistance_start_ohm": 0.1141
+    },
+    {
+      "dataset": "nasa",
+      "cell_id": "B0006",
+      "cycles": 168,
+      "rated_capacity_ah": 2.0,
+      "soh_start": 1.0177,
+      "soh_end": 0.5928,
+      "soh_min": 0.5769,
+      "missing_pct": {
+        "charge_v_rise_s": 0.6
+      },
+      "resistance_start_ohm": 0.1398
+    },
+    {
+      "dataset": "nasa",
+      "cell_id": "B0007",
+      "cycles": 168,
+      "rated_capacity_ah": 2.0,
+      "soh_start": 0.9455,
+      "soh_end": 0.7162,
+      "soh_min": 0.7002,
+      "missing_pct": {
+        "charge_v_rise_s": 0.6
+      },
+      "resistance_start_ohm": 0.0997
+    },
+    {
+      "dataset": "nasa",
+      "cell_id": "B0018",
+      "cycles": 132,
+      "rated_capacity_ah": 2.0,
+      "soh_start": 0.9275,
+      "soh_end": 0.6705,
+      "soh_min": 0.6705,
+      "missing_pct": {},
+      "resistance_start_ohm": 0.155
+    },
+    {
+      "dataset": "calce",
+      "cell_id": "CS2_35",
+      "cycles": 929,
+      "rated_capacity_ah": 1.1,
+      "soh_start": 1.035,
+      "soh_end": 0.2741,
+      "soh_min": 0.2207,
+      "missing_pct": {
+        "charge_v_rise_s": 9.6,
+        "temp_max_c": 100.0,
+        "temp_rise_c": 100.0,
+        "ambient_c": 100.0
+      },
+      "resistance_start_ohm": 0.0932
+    },
+    {
+      "dataset": "calce",
+      "cell_id": "CS2_36",
+      "cycles": 960,
+      "rated_capacity_ah": 1.1,
+      "soh_start": 1.0407,
+      "soh_end": 0.1547,
+      "soh_min": 0.1504,
+      "missing_pct": {
+        "charge_v_rise_s": 12.9,
+        "temp_max_c": 100.0,
+        "temp_rise_c": 100.0,
+        "ambient_c": 100.0
+      },
+      "resistance_start_ohm": 0.0916
+    },
+    {
+      "dataset": "calce",
+      "cell_id": "CS2_37",
+      "cycles": 1033,
+      "rated_capacity_ah": 1.1,
+      "soh_start": 1.0318,
+      "soh_end": 0.1717,
+      "soh_min": 0.1638,
+      "missing_pct": {
+        "charge_v_rise_s": 9.2,
+        "temp_max_c": 100.0,
+        "temp_rise_c": 100.0,
+        "ambient_c": 100.0
+      },
+      "resistance_start_ohm": 0.092
+    },
+    {
+      "dataset": "calce",
+      "cell_id": "CS2_38",
+      "cycles": 1073,
+      "rated_capacity_ah": 1.1,
+      "soh_start": 1.0359,
+      "soh_end": 0.2618,
+      "soh_min": 0.1844,
+      "missing_pct": {
+        "charge_v_rise_s": 9.4,
+        "temp_max_c": 100.0,
+        "temp_rise_c": 100.0,
+        "ambient_c": 100.0
+      },
+      "resistance_start_ohm": 0.1029
+    }
+  ],
+  "datasets": {
+    "nasa": "NASA PCoE",
+    "calce": "CALCE CS2"
+  }
+}

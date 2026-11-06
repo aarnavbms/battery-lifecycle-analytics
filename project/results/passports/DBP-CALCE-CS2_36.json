@@ -1,0 +1,496 @@
+{
+  "schema_version": "1.0",
+  "passport_id": "DBP-CALCE-CS2_36",
+  "battery_id": "CS2_36",
+  "access_level": "full",
+  "head_hash": "9c2ae2831463e6598cfca6ce02eeff1922c104ea5c86d9dfe49d4573e5f3f624",
+  "sections": {
+    "general_information": {
+      "model": "CS2_36",
+      "manufacturer": "Unknown (CALCE CS2 test cells)",
+      "manufacture_date": "2010-07-17",
+      "chemistry": "LiCoO2 (LCO) prismatic",
+      "form_factor": "Prismatic",
+      "rated_capacity_ah": 1.1,
+      "nominal_voltage_v": 3.7,
+      "manufacturing_site": "not disclosed (laboratory test cell)"
+    },
+    "carbon_footprint": {
+      "kgco2e_per_kwh": 75.0,
+      "total_kgco2e": 0.3053,
+      "basis": "assumed mid value of published 61-106 kg CO2e/kWh (IVL)"
+    },
+    "performance_and_durability": {
+      "rated_capacity_ah": 1.1,
+      "initial_capacity_ah": 1.134,
+      "initial_resistance_ohm": 0.0872,
+      "expected_cycle_life": null,
+      "cut_off_voltage_v": null
+    },
+    "battery_status": {
+      "status": "waste",
+      "events": 24,
+      "last_event": "SENT_TO_RECYCLING"
+    },
+    "state_of_health": {
+      "latest_assessment": {
+        "cycle": 730,
+        "soh": 0.6147,
+        "soh_lo": 0.5868,
+        "soh_hi": 0.6427,
+        "soh_measured": 0.5991,
+        "resistance_growth": 1.212,
+        "method": "Gaussian Process on charge-phase signals, 95% conformal interval"
+      },
+      "latest_rul": {
+        "cycle": 707,
+        "threshold": 0.6,
+        "rul_cycles": 66.8,
+        "rul_lo": 0.0,
+        "rul_hi": 195.6,
+        "method": "quantile gradient boosting, conformalised (80% band)"
+      }
+    },
+    "lifecycle_decision": {
+      "cycle": 507,
+      "grade": "B",
+      "application": "Grid / home energy storage",
+      "confidence": "low",
+      "recommendation": "Likely Grid / home energy storage, but uncertainty spans grade C: run a laboratory capacity test first",
+      "service_years": 0.72,
+      "co2_avoided_kg_per_60kwh_pack": 3644.7
+    }
+  },
+  "events": [
+    {
+      "index": 0,
+      "timestamp": "2010-07-17T16:20:54",
+      "type": "MANUFACTURED",
+      "actor_id": "MFR-01",
+      "role": "manufacturer",
+      "data": {
+        "model": "CS2_36",
+        "chemistry": "LiCoO2 (LCO) prismatic",
+        "form_factor": "Prismatic",
+        "rated_capacity_ah": 1.1,
+        "nominal_voltage_v": 3.7,
+        "manufacturer": "Unknown (CALCE CS2 test cells)",
+        "manufacture_date": "2010-07-17",
+        "manufacturing_site": "not disclosed (laboratory test cell)",
+        "initial_capacity_ah": 1.134,
+        "initial_resistance_ohm": 0.0872,
+        "expected_cycle_life": null,
+        "data_source": "CALCE Battery Research Group, University of Maryland, CS2 dataset"
+      },
+      "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "hash": "beecc4e55f7ff814d764c7489ffad76346e191e66d924645eea3d9754608d744",
+      "signature": "Qa+XrYOj1cGz4HEbI/093UiGsNmZ+mqNhS4/Evr58KyEwKR5rd2AkXAu6AFeSleAsL+Qq1d0RhPw+kWF0WvnDw=="
+    },
+    {
+      "index": 1,
+      "timestamp": "2010-07-18T16:20:54",
+      "type": "CARBON_FOOTPRINT_DECLARED",
+      "actor_id": "MFR-01",
+      "role": "manufacturer",
+      "data": {
+        "kgco2e_per_kwh": 75.0,
+        "total_kgco2e": 0.3053,
+        "basis": "assumed mid value of published 61-106 kg CO2e/kWh (IVL)"
+      },
+      "prev_hash": "beecc4e55f7ff814d764c7489ffad76346e191e66d924645eea3d9754608d744",
+      "hash": "818556cc4812301eedf6b762d0e5ce3beeace37b349e25858e4e47de3a933130",
+      "signature": "78yRVTRl6SJFpF3wJsQdkkPRURKmE3yWdK3m0iTl1E9R2/N7SPEDV1Q32ckqKpNzxivdjNQcTuMT3Ut1zGu0Dw=="
+    },
+    {
+      "index": 2,
+      "timestamp": "2010-08-16T16:20:54",
+      "type": "FIRST_LIFE_START",
+      "actor_id": "OEM-01",
+      "role": "oem",
+      "data": {
+        "application": "EV traction (laboratory ageing test)",
+        "ambient_c": null
+      },
+      "prev_hash": "818556cc4812301eedf6b762d0e5ce3beeace37b349e25858e4e47de3a933130",
+      "hash": "3fafec867729178e32838e1f93a23fa5fb27924be8233c02467f294a7f3c01b7",
+      "signature": "55yRlVrr+AhywKRGrYPhMQPA7wITLQ0eN6zpNM/0mHqbXI9sItq8tcUw/06SpQR83KJsyIrz7++KLxS6d0wQAQ=="
+    },
+    {
+      "index": 3,
+      "timestamp": "2010-09-07T21:30:13",
+      "type": "SOH_ASSESSMENT",
+      "actor_id": "AI-ASSESSOR",
+      "role": "assessor",
+      "data": {
+        "cycle": 100,
+        "soh": 0.9601,
+        "soh_lo": 0.9321,
+        "soh_hi": 0.9881,
+        "soh_measured": 0.9629,
+        "resistance_growth": 0.977,
+        "method": "Gaussian Process on charge-phase signals, 95% conformal interval"
+      },
+      "prev_hash": "3fafec867729178e32838e1f93a23fa5fb27924be8233c02467f294a7f3c01b7",
+      "hash": "c63a020c056e23c412b79e0e9328fb5c234b65dc6e9faac26eea4c9503e646e4",
+      "signature": "IDTqrXlIyuHL8HhSyh+1GOKvs4Qy6ECYv8vWvuXEo8ep+5tpkbI86AOAJ4usDksuvbv7bUG6giqHj5LciGSBAA=="
+    },
+    {
+      "index": 4,
+      "timestamp": "2010-09-07T21:30:13",
+      "type": "RUL_PREDICTION",
+      "actor_id": "AI-ASSESSOR",
+      "role": "assessor",
+      "data": {
+        "cycle": 100,
+        "threshold": 0.8,
+        "rul_cycles": 485.2,
+        "rul_lo": 441.7,
+        "rul_hi": 530.4,
+        "method": "quantile gradient boosting, conformalised (80% band)"
+      },
+      "prev_hash": "c63a020c056e23c412b79e0e9328fb5c234b65dc6e9faac26eea4c9503e646e4",
+      "hash": "410e86fe2ec24cfed1a6b42d274b2e0be7aee0d6912c98b1e242a0376c16eeef",
+      "signature": "+LHBk5C/oBlC7jLMEifidCmi2O1DHl1KD9dAOYzVzI99KOnnxTAUUEQ9TLrUwzD1vCt9gQKCiuoV6oh4O7NfDw=="
+    },
+    {
+      "index": 5,
+      "timestamp": "2010-09-22T04:09:06",
+      "type": "SOH_ASSESSMENT",
+      "actor_id": "AI-ASSESSOR",
+      "role": "assessor",
+      "data": {
+        "cycle": 200,
+        "soh": 0.9401,
+        "soh_lo": 0.9122,
+        "soh_hi": 0.9681,
+        "soh_measured": 0.9409,
+        "resistance_growth": 0.959,
+        "method": "Gaussian Process on charge-phase signals, 95% conformal interval"
+      },
+      "prev_hash": "410e86fe2ec24cfed1a6b42d274b2e0be7aee0d6912c98b1e242a0376c16eeef",
+      "hash": "0664284211f9e001352559d75acccd751da94e77107227cb0005f85072fb2464",
+      "signature": "olLFhP56dWODp9lEdVjNqBndkbH+hbrn/bfcOGwqFvlM/4bif1uvxpWO/7qRveSJjZAXXZsoMAChkmbovj9EDg=="
+    },
+    {
+      "index": 6,
+      "timestamp": "2010-09-22T04:09:06",
+      "type": "RUL_PREDICTION",
+      "actor_id": "AI-ASSESSOR",
+      "role": "assessor",
+      "data": {
+        "cycle": 200,
+        "threshold": 0.8,
+        "rul_cycles": 400.9,
+        "rul_lo": 367.7,
+        "rul_hi": 452.0,
+        "method": "quantile gradient boosting, conformalised (80% band)"
+      },
+      "prev_hash": "0664284211f9e001352559d75acccd751da94e77107227cb0005f85072fb2464",
+      "hash": "571b18a96057e1840a9eb267b20a30c55618f76bfc125778902483a3216c4eba",
+      "signature": "+XxCyRKhLPZz46nL4sOguhVtQSTZwD+VE53ijPmqCurERN2hBSJyMJKbfue8dwUn/kn1yUc4fVkkKsOmon2IDA=="
+    },
+    {
+      "index": 7,
+      "timestamp": "2010-10-11T16:45:54",
+      "type": "SOH_ASSESSMENT",
+      "actor_id": "AI-ASSESSOR",
+      "role": "assessor",
+      "data": {
+        "cycle": 300,
+        "soh": 0.9173,
+        "soh_lo": 0.8893,
+        "soh_hi": 0.9453,
+        "soh_measured": 0.9167,
+        "resistance_growth": 1.015,
+        "method": "Gaussian Process on charge-phase signals, 95% conformal interval"
+      },
+      "prev_hash": "571b18a96057e1840a9eb267b20a30c55618f76bfc125778902483a3216c4eba",
+      "hash": "5f6eb8088a969c3133602042e4944b9ad94eb741c8efa822c2e581b008b067d2",
+      "signature": "P86+8jXDDgSUpGuoHLsUdc2ffot9Zix6nYqmtrpzRbqOFOck0cQ9wlQlV3zPvb3iuShVLBdjsNcl7eZku8wwAA=="
+    },
+    {
+      "index": 8,
+      "timestamp": "2010-10-11T16:45:54",
+      "type": "RUL_PREDICTION",
+      "actor_id": "AI-ASSESSOR",
+      "role": "assessor",
+      "data": {
+        "cycle": 300,
+        "threshold": 0.8,
+        "rul_cycles": 324.5,
+        "rul_lo": 281.8,
+        "rul_hi": 356.0,
+        "method": "quantile gradient boosting, conformalised (80% band)"
+      },
+      "prev_hash": "5f6eb8088a969c3133602042e4944b9ad94eb741c8efa822c2e581b008b067d2",
+      "hash": "bcbc65f77dedd1f849680d8efffb6c257b92aa4f9a7355f1f0426f59ba9f1d8c",
+      "signature": "rIouYYBUYJaulV8XjZ1WEtcEkIqKeMcAEwc3D9LT6RCKVF2XI6VBoXRsOVBDyS33PWapo4y82FUZjAaOoiHgBw=="
+    },
+    {
+      "index": 9,
+      "timestamp": "2010-10-26T14:38:50",
+      "type": "SOH_ASSESSMENT",
+      "actor_id": "AI-ASSESSOR",
+      "role": "assessor",
+      "data": {
+        "cycle": 400,
+        "soh": 0.8854,
+        "soh_lo": 0.8574,
+        "soh_hi": 0.9134,
+        "soh_measured": 0.8789,
+        "resistance_growth": 1.032,
+        "method": "Gaussian Process on charge-phase signals, 95% conformal interval"
+      },
+      "prev_hash": "bcbc65f77dedd1f849680d8efffb6c257b92aa4f9a7355f1f0426f59ba9f1d8c",
+      "hash": "93feeb02f6090e4df3715b089869cc41be53d3aaf6d291ba20b3a2a7aa61f6e0",
+      "signature": "buBXcEKwL84tvVOrfYH4V618wdjguP5K3Xe9/BhuVh4wcS0rm/OnTY564X0Er830eLwqPzEVelijbUkSRc2YDQ=="
+    },
+    {
+      "index": 10,
+      "timestamp": "2010-10-26T14:38:50",
+      "type": "RUL_PREDICTION",
+      "actor_id": "AI-ASSESSOR",
+      "role": "assessor",
+      "data": {
+        "cycle": 400,
+        "threshold": 0.8,
+        "rul_cycles": 215.0,
+        "rul_lo": 151.9,
+        "rul_hi": 251.3,
+        "method": "quantile gradient boosting, conformalised (80% band)"
+      },
+      "prev_hash": "93feeb02f6090e4df3715b089869cc41be53d3aaf6d291ba20b3a2a7aa61f6e0",
+      "hash": "ca347f10a14783959e78669be67cf3b4f3f2a1a8591c338ff751ea7768ba17f1",
+      "signature": "fMTymOsg+SEFR6ZxwSN7awSgAlcs4R51gxQGECMIRG5M+T5STXM9JU1o9rEgpsuHONxpSaD0CIODAgKfu8FcAQ=="
+    },
+    {
+      "index": 11,
+      "timestamp": "2010-11-18T11:00:33",
+      "type": "SOH_ASSESSMENT",
+      "actor_id": "AI-ASSESSOR",
+      "role": "assessor",
+      "data": {
+        "cycle": 500,
+        "soh": 0.8264,
+        "soh_lo": 0.7985,
+        "soh_hi": 0.8544,
+        "soh_measured": 0.8221,
+        "resistance_growth": 1.024,
+        "method": "Gaussian Process on charge-phase signals, 95% conformal interval"
+      },
+      "prev_hash": "ca347f10a14783959e78669be67cf3b4f3f2a1a8591c338ff751ea7768ba17f1",
+      "hash": "48c84abeacbac48a9a0b5133de56dfab3cf0b2421d8c79a568aae8ff7cabb66b",
+      "signature": "k0hpAm/OPm3lnrVGEVrQC0oV2eU/54apM5cxK0SPch7QPcG600qortnUsgkuQFH1aNfOBiZz/fo8bSRXrU6PCg=="
+    },
+    {
+      "index": 12,
+      "timestamp": "2010-11-18T11:00:33",
+      "type": "RUL_PREDICTION",
+      "actor_id": "AI-ASSESSOR",
+      "role": "assessor",
+      "data": {
+        "cycle": 500,
+        "threshold": 0.8,
+        "rul_cycles": 63.1,
+        "rul_lo": 31.0,
+        "rul_hi": 93.8,
+        "method": "quantile gradient boosting, conformalised (80% band)"
+      },
+      "prev_hash": "48c84abeacbac48a9a0b5133de56dfab3cf0b2421d8c79a568aae8ff7cabb66b",
+      "hash": "9b46331a2c5f2179c9ebe6e773fd7a41ecb621ca94aa0f5f6f684d7b8aaf72af",
+      "signature": "Q2f85fQm6Mtt1T64JmP4FSikOtWae9npxsUyfI5tpHqRadX0nWUp24Av2EvomvgbBPrUncZF4uYNIQ7YVPTOBg=="
+    },
+    {
+      "index": 13,
+      "timestamp": "2010-11-19T08:20:00",
+      "type": "FIRST_LIFE_RETIRED",
+      "actor_id": "OEM-01",
+      "role": "oem",
+      "data": {
+        "cycle": 507,
+        "reason": "SOH reached 80%"
+      },
+      "prev_hash": "9b46331a2c5f2179c9ebe6e773fd7a41ecb621ca94aa0f5f6f684d7b8aaf72af",
+      "hash": "31ca775b4cc462cd9c6976bee369a8a43f57b062ee7973ac5a291a49d8985bbe",
+      "signature": "FVQML/vOhFAzYTQ7G4iSZRkCSukzL9F/pzGsZaFTHmlY5sbqt2i5kawGSvjdCCeLkIDNTVxQevXHHUnjbjpnBw=="
+    },
+    {
+      "index": 14,
+      "timestamp": "2010-11-19T08:20:00",
+      "type": "SOH_ASSESSMENT",
+      "actor_id": "AI-ASSESSOR",
+      "role": "assessor",
+      "data": {
+        "cycle": 507,
+        "soh": 0.8099,
+        "soh_lo": 0.782,
+        "soh_hi": 0.8379,
+        "soh_measured": 0.7981,
+        "resistance_growth": 1.024,
+        "method": "Gaussian Process on charge-phase signals, 95% conformal interval"
+      },
+      "prev_hash": "31ca775b4cc462cd9c6976bee369a8a43f57b062ee7973ac5a291a49d8985bbe",
+      "hash": "1173fd88a93582236f92d9bb7fb5aa2b605954ec0ba7f4141262ceff17886d34",
+      "signature": "fI44/wn8qg/3/prZoxGBRCjz36nfCdHbZ8O/6ixvUdm4Zyhs/N8Nu/6vcm55xtLtNA66/bu2FrN1qDKnTrf7Cw=="
+    },
+    {
+      "index": 15,
+      "timestamp": "2010-11-19T08:20:00",
+      "type": "RUL_PREDICTION",
+      "actor_id": "AI-ASSESSOR",
+      "role": "assessor",
+      "data": {
+        "cycle": 507,
+        "threshold": 0.6,
+        "rul_cycles": 215.0,
+        "rul_lo": 131.7,
+        "rul_hi": 294.5,
+        "method": "quantile gradient boosting, conformalised (80% band)"
+      },
+      "prev_hash": "1173fd88a93582236f92d9bb7fb5aa2b605954ec0ba7f4141262ceff17886d34",
+      "hash": "e06bc224a72bc964fe467da49987f27023a912a9811a251dcd0914df83acff98",
+      "signature": "gnBoomQB+hfk8Yju4NIPlX3r9vFujwFgYqJ+UyvCDLSAW3ySoIaZkivRoVxvm+2zDLBrA/W1eMzpmyT9W1TCDA=="
+    },
+    {
+      "index": 16,
+      "timestamp": "2010-11-19T09:20:00",
+      "type": "SECOND_LIFE_GRADING",
+      "actor_id": "AI-ASSESSOR",
+      "role": "assessor",
+      "data": {
+        "cycle": 507,
+        "grade": "B",
+        "application": "Grid / home energy storage",
+        "confidence": "low",
+        "recommendation": "Likely Grid / home energy storage, but uncertainty spans grade C: run a laboratory capacity test first",
+        "service_years": 0.72,
+        "co2_avoided_kg_per_60kwh_pack": 3644.7
+      },
+      "prev_hash": "e06bc224a72bc964fe467da49987f27023a912a9811a251dcd0914df83acff98",
+      "hash": "eb97879b9859682292befccccece4daa772955934a6db5799b8a6984057e3a42",
+      "signature": "WFqDFZROhtfHUBhv5ARIJk45pzAsLnHPm1folZvvXx3MB4XrHbqFuWvipvTZUtMhqFyQn3MlPewu67coTvuaCA=="
+    },
+    {
+      "index": 17,
+      "timestamp": "2010-11-19T10:20:00",
+      "type": "REPURPOSED",
+      "actor_id": "REP-01",
+      "role": "repurposer",
+      "data": {
+        "cycle": 507,
+        "application": "Grid / home energy storage",
+        "new_status": "repurposed"
+      },
+      "prev_hash": "eb97879b9859682292befccccece4daa772955934a6db5799b8a6984057e3a42",
+      "hash": "dc59eb48dc206f65a8147ce563588010c99262d84db5b5451a9c318364404dc2",
+      "signature": "Fs1cmIqWvy1CBKaT7dIbVpcDYd+EBdHiNf4qg2EXtCqTwCeAcuzZ9Nd7gDfSfatnCCmzoTdaB1K7QeswWB6kDw=="
+    },
+    {
+      "index": 18,
+      "timestamp": "2010-12-08T01:08:11",
+      "type": "SOH_ASSESSMENT",
+      "actor_id": "AI-ASSESSOR",
+      "role": "assessor",
+      "data": {
+        "cycle": 607,
+        "soh": 0.7568,
+        "soh_lo": 0.7288,
+        "soh_hi": 0.7847,
+        "soh_measured": 0.7518,
+        "resistance_growth": 1.052,
+        "method": "Gaussian Process on charge-phase signals, 95% conformal interval"
+      },
+      "prev_hash": "dc59eb48dc206f65a8147ce563588010c99262d84db5b5451a9c318364404dc2",
+      "hash": "3d10ca7320af47e254087f63b3cc0f141b7d90bad8d62faa795ffe87a6634ab3",
+      "signature": "/KrJypW4uyZ6wUIjkD5xgmQPSZVRFnRKPPm6dO8Yt1Cx5CFfZogz9RvhVdHeH3Rt6UjO217SAJz4huKHaBe/DQ=="
+    },
+    {
+      "index": 19,
+      "timestamp": "2010-12-08T01:08:11",
+      "type": "RUL_PREDICTION",
+      "actor_id": "AI-ASSESSOR",
+      "role": "assessor",
+      "data": {
+        "cycle": 607,
+        "threshold": 0.6,
+        "rul_cycles": 113.0,
+        "rul_lo": 31.0,
+        "rul_hi": 215.7,
+        "method": "quantile gradient boosting, conformalised (80% band)"
+      },
+      "prev_hash": "3d10ca7320af47e254087f63b3cc0f141b7d90bad8d62faa795ffe87a6634ab3",
+      "hash": "4b05fbbbebb414f621e62d963e3f019a255e4d9734e1136fbe4b4cd726cef358",
+      "signature": "s32wgf9z62uM6Qph72KWsu9B5uH7N6C9IvWnLN33j5n59eYFuxar6vdPgI6Wwp0jvCfmPjwdNlqk1ywosLH0AQ=="
+    },
+    {
+      "index": 20,
+      "timestamp": "2010-12-21T22:38:29",
+      "type": "SOH_ASSESSMENT",
+      "actor_id": "AI-ASSESSOR",
+      "role": "assessor",
+      "data": {
+        "cycle": 707,
+        "soh": 0.6975,
+        "soh_lo": 0.6695,
+        "soh_hi": 0.7254,
+        "soh_measured": 0.6991,
+        "resistance_growth": 1.144,
+        "method": "Gaussian Process on charge-phase signals, 95% conformal interval"
+      },
+      "prev_hash": "4b05fbbbebb414f621e62d963e3f019a255e4d9734e1136fbe4b4cd726cef358",
+      "hash": "7d569c6487a006307a112dca4fda660694b856aa6a04f59e29aa967efd999949",
+      "signature": "2Z/MZXljBL2a1wR+dnDjawEHNF7FVbUlDplrd3IFIATRWtb9oVFfMMW41lyz0pEz+du2XFc5+2Z0JkNiHKLMDg=="
+    },
+    {
+      "index": 21,
+      "timestamp": "2010-12-21T22:38:29",
+      "type": "RUL_PREDICTION",
+      "actor_id": "AI-ASSESSOR",
+      "role": "assessor",
+      "data": {
+        "cycle": 707,
+        "threshold": 0.6,
+        "rul_cycles": 66.8,
+        "rul_lo": 0.0,
+        "rul_hi": 195.6,
+        "method": "quantile gradient boosting, conformalised (80% band)"
+      },
+      "prev_hash": "7d569c6487a006307a112dca4fda660694b856aa6a04f59e29aa967efd999949",
+      "hash": "4a2c2568204f247dae803d692c6b8b9c502a3fdfd77e0f79d40257eb1b0c19a3",
+      "signature": "jlf/DGSYinhq9ZTxiddmcDyzd1drvKkjCYLiO7bCcA450JVyWkD2/q4HnxrIoCV0++gEbPEACVLbOc/oQLzaAw=="
+    },
+    {
+      "index": 22,
+      "timestamp": "2011-01-04T09:09:14",
+      "type": "SOH_ASSESSMENT",
+      "actor_id": "AI-ASSESSOR",
+      "role": "assessor",
+      "data": {
+        "cycle": 730,
+        "soh": 0.6147,
+        "soh_lo": 0.5868,
+        "soh_hi": 0.6427,
+        "soh_measured": 0.5991,
+        "resistance_growth": 1.212,
+        "method": "Gaussian Process on charge-phase signals, 95% conformal interval"
+      },
+      "prev_hash": "4a2c2568204f247dae803d692c6b8b9c502a3fdfd77e0f79d40257eb1b0c19a3",
+      "hash": "f27222872a5748b64261eb712d3595a287c1545903f082f2c84224a659b3ad5f",
+      "signature": "uJPdJEBo71rPpeY0zYSGo8btwJCvyWiuqgfo4dfH5o3R6s2LT9n+khEMXE/uKIDuJcE5xqTwhvu1IHnjWB/LCg=="
+    },
+    {
+      "index": 23,
+      "timestamp": "2011-01-04T10:09:14",
+      "type": "SENT_TO_RECYCLING",
+      "actor_id": "REP-01",
+      "role": "repurposer",
+      "data": {
+        "cycle": 730,
+        "reason": "SOH reached 60% second-life floor"
+      },
+      "prev_hash": "f27222872a5748b64261eb712d3595a287c1545903f082f2c84224a659b3ad5f",
+      "hash": "9c2ae2831463e6598cfca6ce02eeff1922c104ea5c86d9dfe49d4573e5f3f624",
+      "signature": "Rg9YwBeGHfxupoSEPdWP5DcuD4xLXVsAjzPOY18gQ6XZ/Yp3MjzFDIx2sMUIEwmgDoLVNSrAUP+TE3vVhPZoAA=="
+    }
+  ]
+}

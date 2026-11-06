@@ -1,0 +1,72 @@
+[
+  {
+    "week": 1,
+    "title": "Scoping, architecture and real data acquisition",
+    "dates": "Mon 2 Nov - Fri 6 Nov 2026",
+    "progress": "10%",
+    "summary": "Fixed the project scope, chose two real battery-ageing datasets (NASA PCoE and CALCE CS2), designed the layered system architecture and set up the repository.",
+    "file": "week-01.pdf",
+    "pages": 2,
+    "size": "2 pages, 119 KB"
+  },
+  {
+    "week": 2,
+    "title": "Data ingestion and quality checks",
+    "dates": "Mon 9 Nov - Fri 13 Nov 2026",
+    "progress": "20%",
+    "summary": "Built loaders for NASA .mat and CALCE Excel files into one validated table: 4,631 cycles from 8 cells.",
+    "file": "week-02.pdf",
+    "pages": 2,
+    "size": "2 pages, 243 KB"
+  },
+  {
+    "week": 3,
+    "title": "Data cleaning and health indicators",
+    "dates": "Mon 16 Nov - Fri 20 Nov 2026",
+    "progress": "30%",
+    "summary": "A one-sided Hampel filter removed 120 interrupted cycles while keeping real capacity regeneration; charge-curve health indicators correlate up to r = 1.00 with SOH.",
+    "file": "week-03.pdf",
+    "pages": 2,
+    "size": "2 pages, 173 KB"
+  },
+  {
+    "week": 4,
+    "title": "State-of-health estimation models",
+    "dates": "Mon 23 Nov - Fri 27 Nov 2026",
+    "progress": "42%",
+    "summary": "Five models compared on cells never seen in training. SOH error 2.20% (NASA, Gradient Boosting) and 0.81% (CALCE, Gaussian Process), with 95% intervals covering 95-98% of true values.",
+    "file": "week-04.pdf",
+    "pages": 2,
+    "size": "2 pages, 257 KB"
+  },
+  {
+    "week": 5,
+    "title": "Remaining useful life prediction",
+    "dates": "Mon 30 Nov - Fri 4 Dec 2026",
+    "progress": "55%",
+    "summary": "Quantile Gradient Boosting predicts cycles left to 80% SOH within 8.2 cycles (NASA) and 46.6 cycles (CALCE); calibrated bands now cover 76-84% at an 80% target.",
+    "file": "week-05.pdf",
+    "pages": 2,
+    "size": "2 pages, 266 KB"
+  },
+  {
+    "week": 6,
+    "title": "Second-life grading, application matching and value",
+    "dates": "Mon 7 Dec - Fri 11 Dec 2026",
+    "progress": "66%",
+    "summary": "Uncertainty-aware grader agrees with lab-truth grades in 83.2% of 101 decisions (89.5% when confident) and flags 65% of its own mistakes for a lab test.",
+    "file": "week-06.pdf",
+    "pages": 2,
+    "size": "2 pages, 153 KB"
+  },
+  {
+    "week": 7,
+    "title": "Digital Battery Passport",
+    "dates": "Mon 14 Dec - Fri 18 Dec 2026",
+    "progress": "78%",
+    "summary": "Built a tamper-evident passport: every event is SHA-256 chained and Ed25519 signed. 8 passports with 164 events verify; all 5 tested attacks are detected.",
+    "file": "week-07.pdf",
+    "pages": 2,
+    "size": "2 pages, 305 KB"
+  }
+]

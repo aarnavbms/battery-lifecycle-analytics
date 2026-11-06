@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero" aria-labelledby="heroTitle">
+  <div class="hero-copy">
+    <h1 id="heroTitle">Eight batteries, from first charge to recycling</h1>
+    <p class="hero-lede">Real lithium-ion cells, aged in the lab until they failed. The AI reads their health from charging data, predicts what is left, decides each one's second life, and signs every step into a Digital Battery Passport.</p>
+    <div class="scrub">
+      <label for="lifeScrub"><span>Point in each cell's recorded life</span> <output id="lifeOut">100%</output></label>
+      <div class="scrub-row">
+        <input type="range" id="lifeScrub" min="0" max="1000" value="1000" aria-describedby="heroTitle">
+        <button type="button" class="replay" id="replay">Replay</button>
+      </div>
+    </div>
+    <ul class="hero-key" aria-label="Lifecycle stages">
+      <li><i class="k first"></i>First life, 80% and above</li>
+      <li><i class="k second"></i>Second life, 60 to 80%</li>
+      <li><i class="k end"></i>Recycling, below 60%</li>
+    </ul>
+  </div>
+  <ol class="fleet" id="fleet" aria-label="State of health of each cell"></ol>
+</section>
+
+<section class="how" aria-labelledby="howTitle">
+  <h2 id="howTitle">How it works</h2>
+  <ol class="steps" id="steps"></ol>
+</section>
+
+<section class="band" aria-labelledby="bandTitle">
+  <h2 id="bandTitle">Lifecycle at a glance</h2>
+  <p class="note">Each track runs from the cell's health at its first cycle to its last measured cycle. The diamond marks retirement from first life at 80% and the grade the AI gave it there.</p>
+  <div id="band" class="chart" role="img" aria-label="Lifecycle band: state of health of each cell from first to last cycle, with retirement grades"></div>
+  <div class="band-legend">
+    <span><i class="sw" style="background:var(--zone-first)"></i>First life: SOH 80% and above</span>
+    <span><i class="sw" style="background:var(--zone-second)"></i>Second-life window: 60 to 80%</span>
+    <span><i class="sw" style="background:var(--zone-end)"></i>Recycling: below 60%</span>
+    <span><i class="sw" style="background:var(--gA)"></i><i class="sw" style="background:var(--gB)"></i><i class="sw" style="background:var(--gC)"></i><i class="sw" style="background:var(--gD)"></i>Grades A to D</span>
+  </div>
+</section>
+
+<section class="section" aria-label="Headline results">
+  <div class="figures" id="figures"></div>
+</section>
+
+<section class="section">
+  <header><h2>Measured state of health</h2><p>Capacity divided by rated capacity, before cleaning. Interrupted cycles show as downward spikes in the CALCE data.</p></header>
+  <div class="grid g2">
+    <div class="panel"><h3>NASA PCoE (rated 2.0 Ah)</h3><div id="fleetNasa" class="chart"></div></div>
+    <div class="panel"><h3>CALCE CS2 (rated 1.1 Ah)</h3><div id="fleetCalce" class="chart"></div></div>
+  </div>
+</section>
+
+<section class="section">
+  <header><h2>Cells and passports</h2><p>Select a row to open that cell.</p></header>
+  <div class="panel flush table-wrap">
+    <table>
+      <thead><tr><th>Cell</th><th>Dataset</th><th class="num">Cycles</th><th class="num">SOH first</th><th class="num">SOH last</th><th>Grade at 80%</th><th>Second-life use</th><th>Passport status</th><th class="num">Events</th><th>Signatures</th></tr></thead>
+      <tbody id="cellRows"></tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/overview.js') }}"></script>{% endblock %}

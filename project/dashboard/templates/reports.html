@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-head">
+  <h1>Weekly status reports</h1>
+  <p class="lede">One report per week for the faculty in charge, from scoping to the passport. Each PDF covers the week's goal, day-by-day work, results with figures, problems solved and the plan for the next week.</p>
+</section>
+<p class="all-reports"><a class="report-pdf inline" href="reports/weekly-reports-weeks-1-7.pdf" target="_blank" rel="noopener">Open all 7 weeks as one PDF</a></p>
+<ol class="reports" id="reportList"></ol>
+<section class="section">
+  <header><h2>Full documentation</h2><p>The complete write-up lives with the code on GitHub.</p></header>
+  <div class="grid g3 doc-links">
+    <a class="panel doc-link" href="https://github.com/aarnavbms/battery-lifecycle-analytics/blob/main/docs/final_report.md" target="_blank" rel="noopener"><b>Final report</b><span>Method, results, limitations, references</span></a>
+    <a class="panel doc-link" href="https://github.com/aarnavbms/battery-lifecycle-analytics/blob/main/docs/architecture.md" target="_blank" rel="noopener"><b>Architecture</b><span>Layers, data flow, passport design</span></a>
+    <a class="panel doc-link" href="https://github.com/aarnavbms/battery-lifecycle-analytics/blob/main/docs/hardware.md" target="_blank" rel="noopener"><b>Hardware option</b><span>Parts, wiring, firmware, roadmap</span></a>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/reports.js') }}"></script>{% endblock %}

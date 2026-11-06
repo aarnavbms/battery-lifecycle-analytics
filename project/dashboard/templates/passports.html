@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Digital Battery Passports</h1>
+<p class="lede">Each battery has a passport built only from signed events. Every event carries the hash of the one before it and an Ed25519 signature from the actor who issued it, so any edit, deletion or forgery is detected. The content follows the access tiers of EU Regulation 2023/1542 (Annex XIII).</p>
+
+<div class="pp-layout">
+  <div class="pp-list" id="ppList" role="toolbar" aria-label="Passports"></div>
+  <div id="ppDetail"><p class="empty">Loading passport…</p></div>
+</div>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/passports.js') }}"></script>{% endblock %}

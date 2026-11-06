@@ -1,0 +1,134 @@
+{
+  "schema_version": "1.0",
+  "passport_id": "DBP-CALCE-CS2_36",
+  "battery_id": "CS2_36",
+  "access_level": "public",
+  "head_hash": "9c2ae2831463e6598cfca6ce02eeff1922c104ea5c86d9dfe49d4573e5f3f624",
+  "sections": {
+    "general_information": {
+      "model": "CS2_36",
+      "manufacturer": "Unknown (CALCE CS2 test cells)",
+      "manufacture_date": "2010-07-17",
+      "chemistry": "LiCoO2 (LCO) prismatic",
+      "form_factor": "Prismatic",
+      "rated_capacity_ah": 1.1,
+      "nominal_voltage_v": 3.7,
+      "manufacturing_site": "not disclosed (laboratory test cell)"
+    },
+    "carbon_footprint": {
+      "kgco2e_per_kwh": 75.0,
+      "total_kgco2e": 0.3053,
+      "basis": "assumed mid value of published 61-106 kg CO2e/kWh (IVL)"
+    },
+    "performance_and_durability": {
+      "rated_capacity_ah": 1.1,
+      "initial_capacity_ah": 1.134,
+      "initial_resistance_ohm": 0.0872,
+      "expected_cycle_life": null,
+      "cut_off_voltage_v": null
+    },
+    "battery_status": {
+      "status": "waste",
+      "events": 24,
+      "last_event": "SENT_TO_RECYCLING"
+    }
+  },
+  "events": [
+    {
+      "index": 0,
+      "timestamp": "2010-07-17T16:20:54",
+      "type": "MANUFACTURED",
+      "actor_id": "MFR-01",
+      "role": "manufacturer",
+      "data": {
+        "model": "CS2_36",
+        "chemistry": "LiCoO2 (LCO) prismatic",
+        "form_factor": "Prismatic",
+        "rated_capacity_ah": 1.1,
+        "nominal_voltage_v": 3.7,
+        "manufacturer": "Unknown (CALCE CS2 test cells)",
+        "manufacture_date": "2010-07-17",
+        "manufacturing_site": "not disclosed (laboratory test cell)",
+        "initial_capacity_ah": 1.134,
+        "initial_resistance_ohm": 0.0872,
+        "expected_cycle_life": null,
+        "data_source": "CALCE Battery Research Group, University of Maryland, CS2 dataset"
+      },
+      "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "hash": "beecc4e55f7ff814d764c7489ffad76346e191e66d924645eea3d9754608d744",
+      "signature": "Qa+XrYOj1cGz4HEbI/093UiGsNmZ+mqNhS4/Evr58KyEwKR5rd2AkXAu6AFeSleAsL+Qq1d0RhPw+kWF0WvnDw=="
+    },
+    {
+      "index": 1,
+      "timestamp": "2010-07-18T16:20:54",
+      "type": "CARBON_FOOTPRINT_DECLARED",
+      "actor_id": "MFR-01",
+      "role": "manufacturer",
+      "data": {
+        "kgco2e_per_kwh": 75.0,
+        "total_kgco2e": 0.3053,
+        "basis": "assumed mid value of published 61-106 kg CO2e/kWh (IVL)"
+      },
+      "prev_hash": "beecc4e55f7ff814d764c7489ffad76346e191e66d924645eea3d9754608d744",
+      "hash": "818556cc4812301eedf6b762d0e5ce3beeace37b349e25858e4e47de3a933130",
+      "signature": "78yRVTRl6SJFpF3wJsQdkkPRURKmE3yWdK3m0iTl1E9R2/N7SPEDV1Q32ckqKpNzxivdjNQcTuMT3Ut1zGu0Dw=="
+    },
+    {
+      "index": 2,
+      "timestamp": "2010-08-16T16:20:54",
+      "type": "FIRST_LIFE_START",
+      "actor_id": "OEM-01",
+      "role": "oem",
+      "data": {
+        "application": "EV traction (laboratory ageing test)",
+        "ambient_c": null
+      },
+      "prev_hash": "818556cc4812301eedf6b762d0e5ce3beeace37b349e25858e4e47de3a933130",
+      "hash": "3fafec867729178e32838e1f93a23fa5fb27924be8233c02467f294a7f3c01b7",
+      "signature": "55yRlVrr+AhywKRGrYPhMQPA7wITLQ0eN6zpNM/0mHqbXI9sItq8tcUw/06SpQR83KJsyIrz7++KLxS6d0wQAQ=="
+    },
+    {
+      "index": 13,
+      "timestamp": "2010-11-19T08:20:00",
+      "type": "FIRST_LIFE_RETIRED",
+      "actor_id": "OEM-01",
+      "role": "oem",
+      "data": {
+        "cycle": 507,
+        "reason": "SOH reached 80%"
+      },
+      "prev_hash": "9b46331a2c5f2179c9ebe6e773fd7a41ecb621ca94aa0f5f6f684d7b8aaf72af",
+      "hash": "31ca775b4cc462cd9c6976bee369a8a43f57b062ee7973ac5a291a49d8985bbe",
+      "signature": "FVQML/vOhFAzYTQ7G4iSZRkCSukzL9F/pzGsZaFTHmlY5sbqt2i5kawGSvjdCCeLkIDNTVxQevXHHUnjbjpnBw=="
+    },
+    {
+      "index": 17,
+      "timestamp": "2010-11-19T10:20:00",
+      "type": "REPURPOSED",
+      "actor_id": "REP-01",
+      "role": "repurposer",
+      "data": {
+        "cycle": 507,
+        "application": "Grid / home energy storage",
+        "new_status": "repurposed"
+      },
+      "prev_hash": "eb97879b9859682292befccccece4daa772955934a6db5799b8a6984057e3a42",
+      "hash": "dc59eb48dc206f65a8147ce563588010c99262d84db5b5451a9c318364404dc2",
+      "signature": "Fs1cmIqWvy1CBKaT7dIbVpcDYd+EBdHiNf4qg2EXtCqTwCeAcuzZ9Nd7gDfSfatnCCmzoTdaB1K7QeswWB6kDw=="
+    },
+    {
+      "index": 23,
+      "timestamp": "2011-01-04T10:09:14",
+      "type": "SENT_TO_RECYCLING",
+      "actor_id": "REP-01",
+      "role": "repurposer",
+      "data": {
+        "cycle": 730,
+        "reason": "SOH reached 60% second-life floor"
+      },
+      "prev_hash": "f27222872a5748b64261eb712d3595a287c1545903f082f2c84224a659b3ad5f",
+      "hash": "9c2ae2831463e6598cfca6ce02eeff1922c104ea5c86d9dfe49d4573e5f3f624",
+      "signature": "Rg9YwBeGHfxupoSEPdWP5DcuD4xLXVsAjzPOY18gQ6XZ/Yp3MjzFDIx2sMUIEwmgDoLVNSrAUP+TE3vVhPZoAA=="
+    }
+  ]
+}

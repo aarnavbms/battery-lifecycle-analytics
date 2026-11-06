@@ -1,0 +1,134 @@
+{
+  "schema_version": "1.0",
+  "passport_id": "DBP-NASA-B0006",
+  "battery_id": "B0006",
+  "access_level": "public",
+  "head_hash": "09bda928f2d53d7d0242cbfdd57a28b604b0422c31dbad9c957ea77dde7bab5e",
+  "sections": {
+    "general_information": {
+      "model": "B0006",
+      "manufacturer": "Unknown (NASA Ames test cells)",
+      "manufacture_date": "2008-03-03",
+      "chemistry": "Li-ion (LiCoO2-based 18650)",
+      "form_factor": "18650 cylindrical",
+      "rated_capacity_ah": 2.0,
+      "nominal_voltage_v": 3.7,
+      "manufacturing_site": "not disclosed (laboratory test cell)"
+    },
+    "carbon_footprint": {
+      "kgco2e_per_kwh": 75.0,
+      "total_kgco2e": 0.555,
+      "basis": "assumed mid value of published 61-106 kg CO2e/kWh (IVL)"
+    },
+    "performance_and_durability": {
+      "rated_capacity_ah": 2.0,
+      "initial_capacity_ah": 2.0133,
+      "initial_resistance_ohm": 0.1398,
+      "expected_cycle_life": null,
+      "cut_off_voltage_v": null
+    },
+    "battery_status": {
+      "status": "waste",
+      "events": 19,
+      "last_event": "SENT_TO_RECYCLING"
+    }
+  },
+  "events": [
+    {
+      "index": 0,
+      "timestamp": "2008-03-03T15:25:41",
+      "type": "MANUFACTURED",
+      "actor_id": "MFR-01",
+      "role": "manufacturer",
+      "data": {
+        "model": "B0006",
+        "chemistry": "Li-ion (LiCoO2-based 18650)",
+        "form_factor": "18650 cylindrical",
+        "rated_capacity_ah": 2.0,
+        "nominal_voltage_v": 3.7,
+        "manufacturer": "Unknown (NASA Ames test cells)",
+        "manufacture_date": "2008-03-03",
+        "manufacturing_site": "not disclosed (laboratory test cell)",
+        "initial_capacity_ah": 2.0133,
+        "initial_resistance_ohm": 0.1398,
+        "expected_cycle_life": null,
+        "data_source": "B. Saha and K. Goebel (2007). Battery Data Set, NASA Ames Prognostics Data Repository"
+      },
+      "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "hash": "5074945efbb07f4d939aadd5ef77b820c77025dd3b6154fc9ef6575c843fd76c",
+      "signature": "mtYfiDx3y00G1TuKn7VvejEhg2HZMyR1RUGh75fhRCmFryhA4N0LSVOhLyKVEhc/lLIA51SVJicA9HZEwCFuBQ=="
+    },
+    {
+      "index": 1,
+      "timestamp": "2008-03-04T15:25:41",
+      "type": "CARBON_FOOTPRINT_DECLARED",
+      "actor_id": "MFR-01",
+      "role": "manufacturer",
+      "data": {
+        "kgco2e_per_kwh": 75.0,
+        "total_kgco2e": 0.555,
+        "basis": "assumed mid value of published 61-106 kg CO2e/kWh (IVL)"
+      },
+      "prev_hash": "5074945efbb07f4d939aadd5ef77b820c77025dd3b6154fc9ef6575c843fd76c",
+      "hash": "d2c5395bbc8271d3222df478a27e4db2e30ae0d27cd719b382bb3533515ec414",
+      "signature": "xZlQKcBPj1gaHlhZuoIfbSrlVoxW5u6SUvBQz96eFUlCMw7JREDK620pkd1lM6H9GiqUrCCTe8lo091+XjzABA=="
+    },
+    {
+      "index": 2,
+      "timestamp": "2008-04-02T15:25:41",
+      "type": "FIRST_LIFE_START",
+      "actor_id": "OEM-01",
+      "role": "oem",
+      "data": {
+        "application": "EV traction (laboratory ageing test)",
+        "ambient_c": 24.0
+      },
+      "prev_hash": "d2c5395bbc8271d3222df478a27e4db2e30ae0d27cd719b382bb3533515ec414",
+      "hash": "c6dda3ef2ee3bcf2061c573c75489b95e780f348961d4e3d97fd53d6e9df2552",
+      "signature": "dnaKEbRxoPggAqwTKuOYSJsCUsRT8VbWvz5G6NDo0A9TI5ofL1FUNRpJf/cHlVQOVuWkx0UezuF5JoBUaXePCg=="
+    },
+    {
+      "index": 9,
+      "timestamp": "2008-05-02T13:43:05",
+      "type": "FIRST_LIFE_RETIRED",
+      "actor_id": "OEM-01",
+      "role": "oem",
+      "data": {
+        "cycle": 63,
+        "reason": "SOH reached 80%"
+      },
+      "prev_hash": "4f30973ff8c67120338342cd50561fa38377077b14e6743f27d31f7170f5565e",
+      "hash": "6481e3a1f10482e168fc50b110b5619f7f45089a3ab6b87d8698b6f192867f0a",
+      "signature": "GraV9+kvBiiRTntyWjzAqo0JvgRK4Exmr0J2rZEu6tTIPQroXjtIxEuTUt0Bit5E6QJV3STCOrgDpPLA1DPtCA=="
+    },
+    {
+      "index": 12,
+      "timestamp": "2008-05-02T15:43:05",
+      "type": "REPURPOSED",
+      "actor_id": "REP-01",
+      "role": "repurposer",
+      "data": {
+        "cycle": 63,
+        "application": "Grid / home energy storage",
+        "new_status": "repurposed"
+      },
+      "prev_hash": "7229d06b5f6c4f964b6f7f8bbe7dfc812bd4cf35cf1f8869a838cc7db5ef965c",
+      "hash": "7d8a9595379438cc16a03270fa535ff808adae7b95c6a5a820038e129c3f870c",
+      "signature": "SkFg1vSiJHGhchnm8J/UKlGifVsGDbNNXOsAJ4dT87loAlhk4Ynp6LqCYtN4x0eyxbitngDu+Mn3QBw03M2lAA=="
+    },
+    {
+      "index": 18,
+      "timestamp": "2008-05-25T16:37:08",
+      "type": "SENT_TO_RECYCLING",
+      "actor_id": "REP-01",
+      "role": "repurposer",
+      "data": {
+        "cycle": 160,
+        "reason": "SOH reached 60% second-life floor"
+      },
+      "prev_hash": "be1a0e34805123fd1dd437157463f980cddcdee50d50e11c231e7ece2116cf25",
+      "hash": "09bda928f2d53d7d0242cbfdd57a28b604b0422c31dbad9c957ea77dde7bab5e",
+      "signature": "hd8ODOMnQvFy9bAWjneMO/neSbsuLwqFoJGV6U1ZHQ1cR4Hd5dwKIdNLn5p5UlejtPI/No9aXg/lWjOilLfZBw=="
+    }
+  ]
+}

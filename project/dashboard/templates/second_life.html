@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Second-life decisions</h1>
+<p class="lede">When a battery leaves its first job, the system grades it from its estimated health, resistance growth and predicted remaining cycles, then picks the most demanding use it can still serve. If the uncertainty crosses a grade boundary, it asks for a lab test instead of guessing.</p>
+
+<section class="section">
+  <header><h2>Assess a battery</h2><p>Move the sliders to grade any battery with the same rules the pipeline uses.</p></header>
+  <div class="grid g2">
+    <form class="panel" id="assessForm" autocomplete="off">
+      <div class="grid" style="gap:18px">
+        <label class="field"><span class="row">Estimated SOH <output id="o_soh"></output></span>
+          <input type="range" id="soh" min="0.45" max="1.0" step="0.005" value="0.78"></label>
+        <label class="field"><span class="row">Uncertainty (half-width of 95% interval) <output id="o_hw"></output></span>
+          <input type="range" id="hw" min="0" max="0.08" step="0.0025" value="0.03"></label>
+        <label class="field"><span class="row">Resistance growth vs fresh <output id="o_rg"></output></span>
+          <input type="range" id="rg" min="0.9" max="2.4" step="0.01" value="1.15"></label>
+        <label class="field"><span class="row">Predicted cycles left to 60% <output id="o_cy"></output></span>
+          <input type="range" id="cy" min="0" max="800" step="10" value="250"></label>
+        <label class="field"><span class="row">Lower bound of cycles left <output id="o_cl"></output></span>
+          <input type="range" id="cl" min="0" max="800" step="10" value="180"></label>
+      </div>
+    </form>
+    <div class="panel" id="verdict" aria-live="polite"></div>
+  </div>
+</section>
+
+<section class="section">
+  <header><h2>How often the AI grade matches the lab grade</h2><p id="agreeText"></p></header>
+  <div class="grid g2">
+    <div class="panel"><h3>Grade agreement on unseen cells</h3><p class="note">Rows are the grade a perfect lab test gives; columns are the AI's grade.</p><div id="confusion" class="chart"></div></div>
+    <div class="panel"><h3>Predicted second-life length (CALCE)</h3><p class="note">Cycles from retirement to 60% SOH, predicted against what each cell actually did.</p><div id="slScatter" class="chart"></div></div>
+  </div>
+</section>
+
+<section class="section">
+  <header><h2>Rules and assumptions</h2><p>Application requirements and value coefficients are project assumptions, set in <code>batterylife/config.py</code>.</p></header>
+  <div class="grid g2">
+    <div class="panel flush table-wrap"><table>
+      <thead><tr><th>Grade</th><th>Use</th><th class="num">Min SOH</th><th class="num">Max resistance</th><th class="num">Min cycles left</th><th class="num">Cycles a year</th></tr></thead>
+      <tbody id="appRows"></tbody></table></div>
+    <div class="panel"><h3>Value assumptions</h3><dl class="kv" id="assumptions"></dl>
+      <p class="note">CO2 avoided is an upper bound: it assumes the repurposed battery fully replaces a new one of the same usable capacity. The footprint is a mid value of the 61-106 kg CO2e per kWh published by IVL for NMC production.</p></div>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/second_life.js') }}"></script>{% endblock %}

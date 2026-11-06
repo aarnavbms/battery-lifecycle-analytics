@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>How good are the models?</h1>
+<p class="lede">Every number on this page is leave-one-cell-out: the model is trained on three cells and scored on the fourth, then rotated. With only four cells per dataset, this is the honest way to measure accuracy.</p>
+
+<section class="section">
+  <header><h2>State-of-health estimation</h2>
+    <div class="toolbar" role="group" aria-label="Feature set">
+      <button class="seg" type="button" data-fs="full" aria-pressed="true">Full charge observed</button>
+      <button class="seg" type="button" data-fs="partial" aria-pressed="false">Partial charge only</button>
+    </div>
+  </header>
+  <div class="grid g2">
+    <div class="panel"><h3>Error by model (lower is better)</h3><p class="note" id="fsNote"></p><div id="sohBars" class="chart"></div></div>
+    <div class="panel"><h3>Primary model, cell by cell</h3><p class="note">RMSE on each unseen cell and the share of its cycles inside the 95% conformal interval.</p>
+      <div class="table-wrap"><table><thead><tr><th>Cell</th><th>Model</th><th class="num">RMSE</th><th class="num">MAE</th><th class="num">Max error</th><th class="num">In 95% band</th></tr></thead><tbody id="perCell"></tbody></table></div>
+    </div>
+  </div>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="panel"><h3>What the Gradient Boosting model relies on</h3><p class="note">Share of impurity reduction, averaged over the four folds.</p><div id="imp" class="chart short"></div></div>
+    <div class="panel"><h3>Signals vs SOH (correlation)</h3><p class="note">Pearson r on cleaned cycles. Positive means the signal falls as the cell ages.</p><div id="corr" class="chart short"></div></div>
+  </div>
+</section>
+
+<section class="section">
+  <header><h2>Remaining-useful-life prediction</h2><p>Error relative to the average life to 80%, so both datasets share one scale.</p></header>
+  <div class="grid g2">
+    <div class="panel"><h3>Mean error as a share of life (lower is better)</h3><div id="rulBars" class="chart"></div></div>
+    <div class="panel"><h3>Details</h3>
+      <div class="table-wrap"><table><thead><tr><th>Dataset</th><th>Method</th><th class="num">MAE, cycles</th><th class="num">At 25% of life</th><th class="num">At 50%</th><th class="num">At 75%</th><th class="num">80% band coverage</th></tr></thead><tbody id="rulRows"></tbody></table></div>
+      <p class="note">Raw quantile bands covered only 22-33% of true values. Conformalised quantile regression widens them using errors on the training cells, bringing coverage near the 80% target.</p>
+    </div>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/models.js') }}"></script>{% endblock %}

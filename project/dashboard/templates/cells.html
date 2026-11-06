@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 id="cellTitle">Cell explorer</h1>
+<p class="lede" id="cellLede">Pick a cell. Every estimate below comes from a model trained on the other cells of its dataset, so this cell was never seen during training.</p>
+
+<div class="picker" role="toolbar" aria-label="Choose a cell">
+  <fieldset><legend>NASA</legend><span id="pickNasa"></span></fieldset>
+  <fieldset><legend>CALCE</legend><span id="pickCalce"></span></fieldset>
+</div>
+
+<div class="figures" id="cellFigures"></div>
+
+<section class="section">
+  <header><h2>State of health: measured vs estimated</h2><p>The estimate uses only charging signals; the band is the 95% conformal interval.</p></header>
+  <div class="panel"><div id="sohChart" class="chart tall" role="img" aria-label="Measured and estimated state of health"></div></div>
+</section>
+
+<section class="section">
+  <header><h2>Remaining useful life</h2><p>Cycles left at each prediction point. The shaded band is the calibrated 80% range from quantile gradient boosting.</p></header>
+  <div class="grid g2">
+    <div class="panel"><h3>Cycles left until 80% (end of first life)</h3><div id="rul80" class="chart"></div></div>
+    <div class="panel"><h3>Cycles left until 60% (end of second life)</h3><div id="rul60" class="chart"></div></div>
+  </div>
+</section>
+
+<section class="section">
+  <header><h2>Health indicators the model reads</h2><p>Signals a battery management system sees during an ordinary charge.</p></header>
+  <div class="grid g4">
+    <div class="panel"><h3>CC charge time</h3><div id="hi1" class="chart short"></div></div>
+    <div class="panel"><h3>3.9 to 4.2 V rise time</h3><div id="hi2" class="chart short"></div></div>
+    <div class="panel"><h3>CV charge time</h3><div id="hi3" class="chart short"></div></div>
+    <div class="panel"><h3>Resistance growth</h3><div id="hi4" class="chart short"></div></div>
+  </div>
+</section>
+
+<section class="section">
+  <header><h2>Second-life decision at each retirement level</h2><p>What the AI would decide if the cell were retired at that SOH, against the grade a perfect lab test gives.</p></header>
+  <div class="panel flush table-wrap">
+    <table>
+      <thead><tr><th class="num">Retired at</th><th class="num">Cycle</th><th class="num">SOH measured</th><th class="num">SOH estimated</th><th class="num">95% lower</th><th class="num">Resistance</th><th class="num">Cycles to 60%, true</th><th class="num">Predicted</th><th>AI grade</th><th>Lab grade</th><th>Confidence</th></tr></thead>
+      <tbody id="decRows"></tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/cells.js') }}"></script>{% endblock %}

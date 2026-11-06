@@ -1,0 +1,586 @@
+{
+  "nasa": {
+    "summary": {
+      "Ridge": {
+        "mae": 0.01757,
+        "rmse": 0.02355,
+        "r2": 0.94375,
+        "max_abs": 0.10073,
+        "bias": -0.00178,
+        "n": 636
+      },
+      "Random Forest": {
+        "mae": 0.01823,
+        "rmse": 0.02407,
+        "r2": 0.94124,
+        "max_abs": 0.11416,
+        "bias": -0.00488,
+        "n": 636
+      },
+      "Gradient Boosting": {
+        "mae": 0.01644,
+        "rmse": 0.02203,
+        "r2": 0.95079,
+        "max_abs": 0.08089,
+        "bias": -0.002,
+        "n": 636
+      },
+      "MLP": {
+        "mae": 0.03727,
+        "rmse": 0.05014,
+        "r2": 0.7451,
+        "max_abs": 0.22237,
+        "bias": 0.00379,
+        "n": 636
+      },
+      "Gaussian Process": {
+        "mae": 0.02325,
+        "rmse": 0.03815,
+        "r2": 0.8524,
+        "max_abs": 0.13973,
+        "bias": -0.0016,
+        "n": 636
+      }
+    },
+    "per_cell": {
+      "B0005": {
+        "Ridge": {
+          "mae": 0.00674,
+          "rmse": 0.0086,
+          "r2": 0.9918,
+          "max_abs": 0.03571,
+          "bias": 0.0016,
+          "n": 168
+        },
+        "Random Forest": {
+          "mae": 0.00753,
+          "rmse": 0.00944,
+          "r2": 0.99011,
+          "max_abs": 0.04546,
+          "bias": 0.00274,
+          "n": 168
+        },
+        "Gradient Boosting": {
+          "mae": 0.00747,
+          "rmse": 0.00903,
+          "r2": 0.99096,
+          "max_abs": 0.03167,
+          "bias": 0.00147,
+          "n": 168
+        },
+        "MLP": {
+          "mae": 0.02667,
+          "rmse": 0.03372,
+          "r2": 0.87379,
+          "max_abs": 0.0904,
+          "bias": -0.01016,
+          "n": 168
+        },
+        "Gaussian Process": {
+          "mae": 0.01344,
+          "rmse": 0.01961,
+          "r2": 0.95734,
+          "max_abs": 0.05901,
+          "bias": 0.01188,
+          "n": 168
+        }
+      },
+      "B0006": {
+        "Ridge": {
+          "mae": 0.0289,
+          "rmse": 0.03368,
+          "r2": 0.92813,
+          "max_abs": 0.10073,
+          "bias": -0.02889,
+          "n": 168
+        },
+        "Random Forest": {
+          "mae": 0.03261,
+          "rmse": 0.03728,
+          "r2": 0.91196,
+          "max_abs": 0.11416,
+          "bias": -0.01781,
+          "n": 168
+        },
+        "Gradient Boosting": {
+          "mae": 0.02897,
+          "rmse": 0.03401,
+          "r2": 0.92672,
+          "max_abs": 0.08089,
+          "bias": -0.01373,
+          "n": 168
+        },
+        "MLP": {
+          "mae": 0.02705,
+          "rmse": 0.03952,
+          "r2": 0.90108,
+          "max_abs": 0.14838,
+          "bias": -0.01272,
+          "n": 168
+        },
+        "Gaussian Process": {
+          "mae": 0.03627,
+          "rmse": 0.05057,
+          "r2": 0.83801,
+          "max_abs": 0.13973,
+          "bias": 0.00238,
+          "n": 168
+        }
+      },
+      "B0007": {
+        "Ridge": {
+          "mae": 0.00674,
+          "rmse": 0.0092,
+          "r2": 0.98684,
+          "max_abs": 0.04402,
+          "bias": -0.00314,
+          "n": 168
+        },
+        "Random Forest": {
+          "mae": 0.01472,
+          "rmse": 0.01856,
+          "r2": 0.94648,
+          "max_abs": 0.04562,
+          "bias": -0.00506,
+          "n": 168
+        },
+        "Gradient Boosting": {
+          "mae": 0.01248,
+          "rmse": 0.016,
+          "r2": 0.96024,
+          "max_abs": 0.0415,
+          "bias": -0.00621,
+          "n": 168
+        },
+        "MLP": {
+          "mae": 0.03355,
+          "rmse": 0.0425,
+          "r2": 0.71941,
+          "max_abs": 0.12908,
+          "bias": -0.01612,
+          "n": 168
+        },
+        "Gaussian Process": {
+          "mae": 0.02801,
+          "rmse": 0.04792,
+          "r2": 0.64324,
+          "max_abs": 0.11335,
+          "bias": -0.02213,
+          "n": 168
+        }
+      },
+      "B0018": {
+        "Ridge": {
+          "mae": 0.03074,
+          "rmse": 0.03204,
+          "r2": 0.82749,
+          "max_abs": 0.04558,
+          "bias": 0.03016,
+          "n": 132
+        },
+        "Random Forest": {
+          "mae": 0.01799,
+          "rmse": 0.02171,
+          "r2": 0.92083,
+          "max_abs": 0.05644,
+          "bias": 0.00213,
+          "n": 132
+        },
+        "Gradient Boosting": {
+          "mae": 0.01693,
+          "rmse": 0.02089,
+          "r2": 0.92668,
+          "max_abs": 0.07182,
+          "bias": 0.01388,
+          "n": 132
+        },
+        "MLP": {
+          "mae": 0.06852,
+          "rmse": 0.07986,
+          "r2": -0.07148,
+          "max_abs": 0.22237,
+          "bias": 0.0679,
+          "n": 132
+        },
+        "Gaussian Process": {
+          "mae": 0.0131,
+          "rmse": 0.0186,
+          "r2": 0.94187,
+          "max_abs": 0.0881,
+          "bias": 0.0023,
+          "n": 132
+        }
+      }
+    },
+    "features": [
+      "cc_charge_time_s",
+      "cv_charge_time_s",
+      "charge_v_rise_s",
+      "resistance_ohm",
+      "cycle"
+    ],
+    "primary_model": "Gradient Boosting",
+    "feature_importance_gbr": {
+      "cc_charge_time_s": 0.495,
+      "cv_charge_time_s": 0.002,
+      "charge_v_rise_s": 0.4176,
+      "resistance_ohm": 0.0046,
+      "cycle": 0.0807
+    },
+    "conformal_halfwidth": {
+      "B0005": 0.07106,
+      "B0006": 0.04137,
+      "B0007": 0.0597,
+      "B0018": 0.0616
+    },
+    "coverage_95": 0.94969,
+    "coverage_per_cell": {
+      "B0005": 1.0,
+      "B0006": 0.81548,
+      "B0007": 1.0,
+      "B0018": 0.99242
+    },
+    "partial_charge": {
+      "features": [
+        "cv_charge_time_s",
+        "charge_v_rise_s",
+        "resistance_ohm",
+        "cycle"
+      ],
+      "summary": {
+        "Ridge": {
+          "mae": 0.02338,
+          "rmse": 0.02958,
+          "r2": 0.91128,
+          "max_abs": 0.11379,
+          "bias": -0.00378,
+          "n": 636
+        },
+        "Random Forest": {
+          "mae": 0.01798,
+          "rmse": 0.02492,
+          "r2": 0.93705,
+          "max_abs": 0.10544,
+          "bias": -0.00495,
+          "n": 636
+        },
+        "Gradient Boosting": {
+          "mae": 0.01843,
+          "rmse": 0.02494,
+          "r2": 0.93693,
+          "max_abs": 0.1079,
+          "bias": -0.00527,
+          "n": 636
+        },
+        "MLP": {
+          "mae": 0.0529,
+          "rmse": 0.07067,
+          "r2": 0.49356,
+          "max_abs": 0.24687,
+          "bias": 0.01668,
+          "n": 636
+        },
+        "Gaussian Process": {
+          "mae": 0.02776,
+          "rmse": 0.04204,
+          "r2": 0.82077,
+          "max_abs": 0.13642,
+          "bias": 0.00176,
+          "n": 636
+        }
+      }
+    }
+  },
+  "calce": {
+    "summary": {
+      "Ridge": {
+        "mae": 0.00519,
+        "rmse": 0.00835,
+        "r2": 0.99847,
+        "max_abs": 0.17442,
+        "bias": -0.00094,
+        "n": 3875
+      },
+      "Random Forest": {
+        "mae": 0.00709,
+        "rmse": 0.01149,
+        "r2": 0.9971,
+        "max_abs": 0.17838,
+        "bias": -0.00122,
+        "n": 3875
+      },
+      "Gradient Boosting": {
+        "mae": 0.00761,
+        "rmse": 0.01319,
+        "r2": 0.99618,
+        "max_abs": 0.18435,
+        "bias": -0.00161,
+        "n": 3875
+      },
+      "MLP": {
+        "mae": 0.0182,
+        "rmse": 0.07399,
+        "r2": 0.87978,
+        "max_abs": 0.6512,
+        "bias": 0.01275,
+        "n": 3875
+      },
+      "Gaussian Process": {
+        "mae": 0.00469,
+        "rmse": 0.00806,
+        "r2": 0.99857,
+        "max_abs": 0.20999,
+        "bias": -0.00031,
+        "n": 3875
+      }
+    },
+    "per_cell": {
+      "CS2_35": {
+        "Ridge": {
+          "mae": 0.00399,
+          "rmse": 0.00638,
+          "r2": 0.99892,
+          "max_abs": 0.04345,
+          "bias": 0.00105,
+          "n": 897
+        },
+        "Random Forest": {
+          "mae": 0.00655,
+          "rmse": 0.01251,
+          "r2": 0.99584,
+          "max_abs": 0.08745,
+          "bias": 0.00115,
+          "n": 897
+        },
+        "Gradient Boosting": {
+          "mae": 0.00595,
+          "rmse": 0.01039,
+          "r2": 0.99713,
+          "max_abs": 0.08662,
+          "bias": 0.0009,
+          "n": 897
+        },
+        "MLP": {
+          "mae": 0.0064,
+          "rmse": 0.00937,
+          "r2": 0.99767,
+          "max_abs": 0.05208,
+          "bias": -0.00203,
+          "n": 897
+        },
+        "Gaussian Process": {
+          "mae": 0.00449,
+          "rmse": 0.00747,
+          "r2": 0.99852,
+          "max_abs": 0.04619,
+          "bias": -5e-05,
+          "n": 897
+        }
+      },
+      "CS2_36": {
+        "Ridge": {
+          "mae": 0.00543,
+          "rmse": 0.00804,
+          "r2": 0.99886,
+          "max_abs": 0.05921,
+          "bias": 0.00267,
+          "n": 934
+        },
+        "Random Forest": {
+          "mae": 0.00992,
+          "rmse": 0.01277,
+          "r2": 0.99712,
+          "max_abs": 0.08362,
+          "bias": 0.00032,
+          "n": 934
+        },
+        "Gradient Boosting": {
+          "mae": 0.01016,
+          "rmse": 0.01278,
+          "r2": 0.99711,
+          "max_abs": 0.12103,
+          "bias": -0.0009,
+          "n": 934
+        },
+        "MLP": {
+          "mae": 0.00917,
+          "rmse": 0.01284,
+          "r2": 0.99708,
+          "max_abs": 0.04909,
+          "bias": 0.00481,
+          "n": 934
+        },
+        "Gaussian Process": {
+          "mae": 0.0049,
+          "rmse": 0.00697,
+          "r2": 0.99914,
+          "max_abs": 0.06738,
+          "bias": 0.00127,
+          "n": 934
+        }
+      },
+      "CS2_37": {
+        "Ridge": {
+          "mae": 0.00458,
+          "rmse": 0.00655,
+          "r2": 0.99908,
+          "max_abs": 0.05909,
+          "bias": -0.00206,
+          "n": 1005
+        },
+        "Random Forest": {
+          "mae": 0.00478,
+          "rmse": 0.00733,
+          "r2": 0.99885,
+          "max_abs": 0.07743,
+          "bias": -0.00226,
+          "n": 1005
+        },
+        "Gradient Boosting": {
+          "mae": 0.00453,
+          "rmse": 0.0068,
+          "r2": 0.99901,
+          "max_abs": 0.06782,
+          "bias": -0.00145,
+          "n": 1005
+        },
+        "MLP": {
+          "mae": 0.00683,
+          "rmse": 0.00895,
+          "r2": 0.99828,
+          "max_abs": 0.0597,
+          "bias": 0.00174,
+          "n": 1005
+        },
+        "Gaussian Process": {
+          "mae": 0.00356,
+          "rmse": 0.00567,
+          "r2": 0.99931,
+          "max_abs": 0.07002,
+          "bias": -0.00139,
+          "n": 1005
+        }
+      },
+      "CS2_38": {
+        "Ridge": {
+          "mae": 0.00661,
+          "rmse": 0.01121,
+          "r2": 0.99693,
+          "max_abs": 0.17442,
+          "bias": -0.00484,
+          "n": 1039
+        },
+        "Random Forest": {
+          "mae": 0.00723,
+          "rmse": 0.0126,
+          "r2": 0.99612,
+          "max_abs": 0.17838,
+          "bias": -0.00363,
+          "n": 1039
+        },
+        "Gradient Boosting": {
+          "mae": 0.00974,
+          "rmse": 0.01908,
+          "r2": 0.9911,
+          "max_abs": 0.18435,
+          "bias": -0.00457,
+          "n": 1039
+        },
+        "MLP": {
+          "mae": 0.04749,
+          "rmse": 0.14183,
+          "r2": 0.50857,
+          "max_abs": 0.6512,
+          "bias": 0.0433,
+          "n": 1039
+        },
+        "Gaussian Process": {
+          "mae": 0.00579,
+          "rmse": 0.01094,
+          "r2": 0.99708,
+          "max_abs": 0.20999,
+          "bias": -0.00088,
+          "n": 1039
+        }
+      }
+    },
+    "features": [
+      "cc_charge_time_s",
+      "cv_charge_time_s",
+      "charge_v_rise_s",
+      "resistance_ohm",
+      "cycle"
+    ],
+    "primary_model": "Gaussian Process",
+    "feature_importance_gbr": {
+      "cc_charge_time_s": 0.3542,
+      "cv_charge_time_s": 0.0041,
+      "charge_v_rise_s": 0.6184,
+      "resistance_ohm": 0.0067,
+      "cycle": 0.0166
+    },
+    "conformal_halfwidth": {
+      "CS2_35": 0.01825,
+      "CS2_36": 0.02797,
+      "CS2_37": 0.03718,
+      "CS2_38": 0.02305
+    },
+    "coverage_95": 0.97729,
+    "coverage_per_cell": {
+      "CS2_35": 0.96878,
+      "CS2_36": 0.99572,
+      "CS2_37": 0.99801,
+      "CS2_38": 0.94803
+    },
+    "partial_charge": {
+      "features": [
+        "cv_charge_time_s",
+        "charge_v_rise_s",
+        "resistance_ohm",
+        "cycle"
+      ],
+      "summary": {
+        "Ridge": {
+          "mae": 0.03215,
+          "rmse": 0.05871,
+          "r2": 0.92432,
+          "max_abs": 0.41662,
+          "bias": -0.0105,
+          "n": 3875
+        },
+        "Random Forest": {
+          "mae": 0.01368,
+          "rmse": 0.01957,
+          "r2": 0.99159,
+          "max_abs": 0.178,
+          "bias": 0.00027,
+          "n": 3875
+        },
+        "Gradient Boosting": {
+          "mae": 0.01456,
+          "rmse": 0.02074,
+          "r2": 0.99056,
+          "max_abs": 0.11157,
+          "bias": -0.00135,
+          "n": 3875
+        },
+        "MLP": {
+          "mae": 0.01648,
+          "rmse": 0.03281,
+          "r2": 0.97635,
+          "max_abs": 0.29284,
+          "bias": 0.00406,
+          "n": 3875
+        },
+        "Gaussian Process": {
+          "mae": 0.0203,
+          "rmse": 0.03833,
+          "r2": 0.96774,
+          "max_abs": 0.22747,
+          "bias": -8e-05,
+          "n": 3875
+        }
+      }
+    }
+  }
+}

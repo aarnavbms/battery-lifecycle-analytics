@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "passport_id": "DBP-HW-001",
+  "battery_id": "HW-001",
+  "access_level": "public",
+  "head_hash": "8248637aaa2cdf0ab2105e627831d3edbdf24d6d325962d71cbff890caf41841",
+  "sections": {
+    "general_information": {
+      "model": "HW-001",
+      "manufacturer": "unknown (bench cell)",
+      "manufacture_date": "2026-11-06",
+      "chemistry": "Li-ion 18650 (bench cell)",
+      "form_factor": "18650 cylindrical",
+      "rated_capacity_ah": 2.0,
+      "nominal_voltage_v": 3.7,
+      "manufacturing_site": null
+    },
+    "carbon_footprint": null,
+    "performance_and_durability": {
+      "rated_capacity_ah": 2.0,
+      "initial_capacity_ah": null,
+      "initial_resistance_ohm": null,
+      "expected_cycle_life": null,
+      "cut_off_voltage_v": null
+    },
+    "battery_status": {
+      "status": "original",
+      "events": 8,
+      "last_event": "SECOND_LIFE_GRADING"
+    }
+  },
+  "events": [
+    {
+      "index": 0,
+      "timestamp": "2026-11-06T06:52:19",
+      "type": "MANUFACTURED",
+      "actor_id": "MFR-01",
+      "role": "manufacturer",
+      "data": {
+        "model": "HW-001",
+        "chemistry": "Li-ion 18650 (bench cell)",
+        "form_factor": "18650 cylindrical",
+        "rated_capacity_ah": 2.0,
+        "nominal_voltage_v": 3.7,
+        "manufacturer": "unknown (bench cell)",
+        "manufacture_date": "2026-11-06",
+        "data_source": "simulated monitoring board (SIM-01)"
+      },
+      "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "hash": "41061868b72f53c1337331775c3706c872e75eb1cf0aa8476b04f3376a89db34",
+      "signature": "wVU0sOnvqzowSbMZTqjhv75qziLbdK99sZDzwpE/jJubYFVHqzPiv7AWnosP3jZ6bG+HWXiCxgB+yZBsDLrDCQ=="
+    }
+  ]
+}
