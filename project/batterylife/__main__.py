@@ -5,6 +5,9 @@
     python -m batterylife tamper-demo [PASSPORT_ID]
     python -m batterylife assess --soh 0.78 --soh-lo 0.74 --resistance 1.2 [--cycles 250]
     python -m batterylife passport PASSPORT_ID [--public]
+    python -m batterylife db                 rebuild the API database from the result files
+    python -m batterylife explain            compute which signals the SOH models rely on
+    python -m batterylife serve [--port N]   start the website and REST API
 """
 from __future__ import annotations
 
@@ -74,6 +77,33 @@ def cmd_passport(a):
     print(json.dumps(p.to_dict("public" if a.public else "full")["sections"], indent=2))
 
 
+def cmd_db(a):
+    from .service import CTX, db
+    if CTX.db.exists() and a.reset:
+        CTX.db.unlink()
+    conn = db.connect()
+    print("synced:", db.sync_from_files(conn))
+    from .service.auth import seed_users
+    seed_users(conn)
+    conn.commit()
+    print("tables:", db.table_counts(conn))
+    print("database:", CTX.db)
+
+
+def cmd_explain(a):
+    from .service import explain
+    explain.run()
+    print("wrote", explain.OUT)
+
+
+def cmd_serve(a):
+    import os
+    import runpy
+    from .config import ROOT
+    os.environ.setdefault("PORT", str(a.port))
+    runpy.run_path(str(ROOT / "dashboard" / "app.py"), run_name="__main__")
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(prog="python -m batterylife", description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -99,6 +129,13 @@ def main(argv=None):
     p.add_argument("id")
     p.add_argument("--public", action="store_true")
     p.set_defaults(f=cmd_passport)
+    d = sub.add_parser("db", help="rebuild the API database from the result files")
+    d.add_argument("--reset", action="store_true", help="delete the database first (drops uploads and the audit log)")
+    d.set_defaults(f=cmd_db)
+    sub.add_parser("explain", help="permutation importance of the SOH models").set_defaults(f=cmd_explain)
+    sv = sub.add_parser("serve", help="start the website and REST API")
+    sv.add_argument("--port", type=int, default=8050)
+    sv.set_defaults(f=cmd_serve)
     a = ap.parse_args(argv)
     a.f(a)
 

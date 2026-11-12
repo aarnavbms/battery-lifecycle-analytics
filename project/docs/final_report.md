@@ -216,6 +216,19 @@ The project shows that a battery's health and remaining life can be estimated fr
 
 Each sprint has its own report in `docs/sprints/` and a git tag (`sprint-01` ... `sprint-10`).
 
+## 8a. Version 1.1: software platform
+
+After the ten sprints the project was extended from an analysis pipeline into a software platform. Full details are in [platform.md](platform.md).
+
+- **Database and REST API.** The results are loaded into a SQLite database (10 tables). A versioned API with 23 endpoints, described in OpenAPI 3.0, exposes cells, cycles, grading, passports, uploads, network measures and the audit log.
+- **Roles.** Eight roles with password login and signed tokens. The public sees the public passport tier; actors with a legitimate interest see the full passport and may sign only the event types their role allows. The rule is enforced by the API and again by the ledger.
+- **Assess your own data.** A CSV of battery cycles returns health, a trend forecast, a second-life grade, a ranked fleet table and a signed passport. If only charging signals are given for a trained cell type, health comes from the SOH model with no discharge test.
+- **Network analysis.** The 172 signed events form a hand-off network between actors. The AI assessor has the highest betweenness (0.25) and PageRank (0.45): it is the broker every battery passes through, which is a dependency risk a real passport system should spread across several accredited assessors.
+- **Explainability.** Permutation importance on unseen cells shows both SOH models depend mainly on constant-current charge time and the 3.9-4.2 V rise time, and little on cycle count.
+- **Engineering.** 102 automated tests, a GitHub Actions workflow, and a Dockerfile.
+
+Limits: the trend forecasts used for uploads are rough (their errors on the laboratory cells are in section 4), the network is small, and the Docker image was written but not built in the development environment.
+
 ## References
 - Saha, B. and Goebel, K. (2007). *Battery Data Set.* NASA Ames Prognostics Data Repository, NASA Ames Research Center.
 - CALCE Battery Research Group. *CS2 Battery Data.* Center for Advanced Life Cycle Engineering, University of Maryland.

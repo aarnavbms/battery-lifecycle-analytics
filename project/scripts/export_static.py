@@ -30,7 +30,9 @@ PLOTLY_FILE = ROOT / "vendor" / "plotly-2.35.2.min.js"   # plotly.js v2.35.2 (MI
 PUBLIC_DIR = ROOT / "site" / "public"
 VIEWS = [(k.replace("_", "-"), url, label) for _, items in NAV_GROUPS for k, url, label, _ in items]
 SCRIPTS = {"overview": "overview.js", "cells": "cells.js", "models": "models.js", "second-life": "second_life.js",
-           "passports": "passports.js", "hardware": "hardware.js", "reports": "reports.js"}
+           "passports": "passports.js", "hardware": "hardware.js", "reports": "reports.js",
+           "assess": "assess.js", "network": "network.js", "api": "apidocs.js"}
+SAMPLES = {"sample_fleet_12_cells_synthetic.csv": (2.5, "other"), "sample_single_cell_nasa_B0005.csv": (2.0, "nasa")}
 REPORTS = ROOT / "docs" / "reports"
 
 # single-page navigation instead of separate URLs
@@ -40,6 +42,7 @@ PATCHES = {
                  ('history.replaceState(null, "", `?cell=${id}`);', "")],
     "passports.js": [('new URLSearchParams(location.search).get("id")', 'APP.param("id")'),
                      ('history.replaceState(null, "", `?id=${current}`);', "")],
+    "apidocs.js": [('href="assess" data-nav-go="assess"', 'href="#assess"')],
 }
 
 EXTRA_CSS = """
@@ -59,15 +62,24 @@ main { padding: 32px max(32px, env(safe-area-inset-right, 0px)) 48px max(32px, e
 
 def capture(client) -> dict:
     get = {}
+    from batterylife.service import analysis, auth, db
+    db.ensure()
+    conn = db.connect()
+    hdr = {"Authorization": "Bearer " + auth.demo_login(conn, "regulator")["token"]}
+    conn.close()
     for url in ["/api/summary", "/api/fleet", "/api/models", "/api/second-life", "/api/passports", "/api/attacks",
-                "/api/hardware", "/api/reports"]:
-        get[url] = client.get(url).get_json()
+                "/api/hardware", "/api/reports", "/api/v1/openapi.json", "/api/v1/health", "/api/v1/auth/roles",
+                "/api/v1/network", "/api/v1/explain"]:
+        get[url] = client.get(url, headers=hdr).get_json()
+    get["/api/passports"] = [p for p in get["/api/passports"] if p["origin"] != "upload"]
+    samples = {name: analysis.analyse_only((ROOT / "data" / "samples" / name).read_bytes(), name, rated, prof)
+               for name, (rated, prof) in SAMPLES.items()}
     for c in get["/api/summary"]["cells"]:
         get[f"/api/cell/{c['cell_id']}"] = client.get(f"/api/cell/{c['cell_id']}").get_json()
     bodies, actors, meta = {}, None, None
     for pid in store.list_passports():
         for acc in ("full", "public"):
-            get[f"/api/passport/{pid}?access={acc}"] = client.get(f"/api/passport/{pid}?access={acc}").get_json()
+            get[f"/api/passport/{pid}?access={acc}"] = client.get(f"/api/passport/{pid}?access={acc}", headers=hdr).get_json()
         p = store.load_passport(pid)
         bodies[pid] = [canonical(_body(e)).decode() for e in p.events]
         full = get[f"/api/passport/{pid}?access=full"]
@@ -75,7 +87,7 @@ def capture(client) -> dict:
     sl = get["/api/second-life"]
     return {"get": get, "bodies": bodies, "actors": actors, "event_meta": meta,
             "required_fields": REQUIRED_FIELDS, "applications": sl["applications"],
-            "assumptions": sl["assumptions"], "attacks": ATTACKS}
+            "assumptions": sl["assumptions"], "attacks": ATTACKS, "samples": samples}
 
 
 def main_block(html: str) -> str:
@@ -134,6 +146,11 @@ def build() -> Path:
     <span>Battery Lifecycle<small>Analytics &amp; Passports</small></span>
   </a>
   <nav aria-label="Sections">{sidebar()}</nav>
+  <div class="who">
+    <label for="roleSelect">Viewing as</label>
+    <select id="roleSelect" aria-describedby="whoHint"><option value="public">Public visitor</option></select>
+    <p id="whoHint">Public tier: restricted passport data is hidden.</p>
+  </div>
   <div class="side-foot">
     <button class="theme" id="themeToggle" type="button" aria-label="Switch light or dark theme">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9z"/></svg><span>Theme</span>
@@ -152,7 +169,7 @@ def build() -> Path:
 <script>window.__STATIC__ = {data_json};</script>
 <script>{(ROOT / 'dashboard' / 'static_site' / 'runtime.js').read_text()}</script>
 <script>{(STATIC / 'js' / 'common.js').read_text()}
-UI.get = APP.get; UI.post = APP.post;</script>
+UI.get = APP.get; UI.post = APP.post; UI.upload = APP.upload; UI.openPdf = APP.openPdf; UI.isStatic = true;</script>
 <script>{scripts}</script>
 """
     OUT.parent.mkdir(parents=True, exist_ok=True)
@@ -168,6 +185,18 @@ UI.get = APP.get; UI.post = APP.post;</script>
         + html.replace('<meta name="claude:viewport-fit-sides" content="cover">\n', '') + '</body>\n</html>\n')
     shutil.copyfile(PLOTLY_FILE, PUBLIC_DIR / "plotly.min.js")
     (PUBLIC_DIR / ".nojekyll").write_text("")
+    (PUBLIC_DIR / "samples").mkdir(exist_ok=True)
+    for name in SAMPLES:
+        shutil.copyfile(ROOT / "data" / "samples" / name, PUBLIC_DIR / "samples" / name)
+    from batterylife.passport.ledger import verify
+    from batterylife.service import passport_pdf
+    reg = store.load_registry()
+    (PUBLIC_DIR / "passports").mkdir(exist_ok=True)
+    for pid in store.list_passports():
+        p = store.load_passport(pid)
+        v = verify(p, reg)
+        (PUBLIC_DIR / "passports" / f"{pid}.pdf").write_bytes(passport_pdf.build(p, v, "full"))
+        (PUBLIC_DIR / "passports" / f"{pid}.public.pdf").write_bytes(passport_pdf.build(p, v, "public"))
     if REPORTS.exists():
         (PUBLIC_DIR / "reports").mkdir(exist_ok=True)
         for f in REPORTS.glob("*.pdf"):

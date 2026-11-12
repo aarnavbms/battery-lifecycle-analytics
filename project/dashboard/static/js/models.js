@@ -84,7 +84,24 @@
   }
   document.getElementById("rulRows").innerHTML = rr.join("");
 
-  const draw = () => { drawBars(); drawImp(); drawCorr(); drawRul(); };
+  // explainability: permutation importance on held-out cells
+  let X = null;
+  try { X = await UI.get("/api/v1/explain"); } catch (e) { /* optional */ }
+  function drawPerm() {
+    if (!X) { document.getElementById("perm").innerHTML = '<p class="empty">Run <code>python -m batterylife explain</code> to compute this.</p>'; return; }
+    UI.plot("perm", DS.map(([ds, name, c]) => ({
+      type: "bar", orientation: "h", name: `${name} (${X.datasets[ds].model})`, y: X.features.map((f) => LABEL[f] || f),
+      x: X.features.map((f) => X.datasets[ds].mean[f]), marker: { color: UI.css(c) },
+      error_x: { type: "data", array: X.features.map((f) => X.datasets[ds].spread_across_cells[f]), color: UI.css("--ink-2"), thickness: 1, width: 3 },
+      hovertemplate: `${name} %{y}<br>error rises by %{x:.2f} points<extra></extra>` })),
+      { barmode: "group", margin: { l: 120, t: 26, b: 40 }, xaxis: { title: { text: "Rise in RMSE when shuffled (SOH %-points)" }, rangemode: "tozero" }, yaxis: { autorange: "reversed" } });
+  }
+  if (X) {
+    const top = (ds) => LABEL[X.datasets[ds].top_signal].toLowerCase(), v = (ds) => X.datasets[ds].mean[X.datasets[ds].top_signal].toFixed(1);
+    document.getElementById("permText").textContent = `For the NASA cells the model leans most on ${top("nasa")} (error rises by ${v("nasa")} points when it is shuffled). For the CALCE cells it is ${top("calce")} (${v("calce")} points). Whiskers show the spread across the four held-out cells.`;
+  }
+
+  const draw = () => { drawBars(); drawPerm(); drawImp(); drawCorr(); drawRul(); };
   draw();
   UI.onTheme(draw);
 })();

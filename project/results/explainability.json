@@ -1,0 +1,110 @@
+{
+  "method": "permutation importance on the held-out cell (leave-one-cell-out)",
+  "unit": "rise in RMSE, SOH percentage points",
+  "repeats": 8,
+  "features": [
+    "cc_charge_time_s",
+    "cv_charge_time_s",
+    "charge_v_rise_s",
+    "resistance_ohm",
+    "cycle"
+  ],
+  "datasets": {
+    "nasa": {
+      "model": "Gradient Boosting",
+      "mean": {
+        "cc_charge_time_s": 3.495,
+        "cv_charge_time_s": 0.09,
+        "charge_v_rise_s": 4.502,
+        "resistance_ohm": 0.016,
+        "cycle": 1.586
+      },
+      "spread_across_cells": {
+        "cc_charge_time_s": 2.464,
+        "cv_charge_time_s": 0.031,
+        "charge_v_rise_s": 0.936,
+        "resistance_ohm": 0.053,
+        "cycle": 0.578
+      },
+      "per_cell": {
+        "B0005": {
+          "cc_charge_time_s": 4.228,
+          "cv_charge_time_s": 0.077,
+          "charge_v_rise_s": 5.672,
+          "resistance_ohm": 0.041,
+          "cycle": 2.407
+        },
+        "B0006": {
+          "cc_charge_time_s": 6.854,
+          "cv_charge_time_s": 0.091,
+          "charge_v_rise_s": 3.519,
+          "resistance_ohm": -0.005,
+          "cycle": 1.413
+        },
+        "B0007": {
+          "cc_charge_time_s": 2.882,
+          "cv_charge_time_s": 0.054,
+          "charge_v_rise_s": 3.65,
+          "resistance_ohm": 0.086,
+          "cycle": 0.802
+        },
+        "B0018": {
+          "cc_charge_time_s": 0.017,
+          "cv_charge_time_s": 0.138,
+          "charge_v_rise_s": 5.167,
+          "resistance_ohm": -0.057,
+          "cycle": 1.723
+        }
+      },
+      "top_signal": "charge_v_rise_s"
+    },
+    "calce": {
+      "model": "Gaussian Process",
+      "mean": {
+        "cc_charge_time_s": 20.643,
+        "cv_charge_time_s": 0.854,
+        "charge_v_rise_s": 8.746,
+        "resistance_ohm": 3.27,
+        "cycle": 0.518
+      },
+      "spread_across_cells": {
+        "cc_charge_time_s": 4.233,
+        "cv_charge_time_s": 0.211,
+        "charge_v_rise_s": 2.452,
+        "resistance_ohm": 3.03,
+        "cycle": 0.77
+      },
+      "per_cell": {
+        "CS2_35": {
+          "cc_charge_time_s": 14.594,
+          "cv_charge_time_s": 0.808,
+          "charge_v_rise_s": 12.897,
+          "resistance_ohm": 1.245,
+          "cycle": 1.85
+        },
+        "CS2_36": {
+          "cc_charge_time_s": 26.561,
+          "cv_charge_time_s": 0.78,
+          "charge_v_rise_s": 7.994,
+          "resistance_ohm": 3.599,
+          "cycle": 0.049
+        },
+        "CS2_37": {
+          "cc_charge_time_s": 20.57,
+          "cv_charge_time_s": 1.199,
+          "charge_v_rise_s": 6.559,
+          "resistance_ohm": 8.06,
+          "cycle": 0.155
+        },
+        "CS2_38": {
+          "cc_charge_time_s": 20.847,
+          "cv_charge_time_s": 0.629,
+          "charge_v_rise_s": 7.533,
+          "resistance_ohm": 0.175,
+          "cycle": 0.02
+        }
+      },
+      "top_signal": "cc_charge_time_s"
+    }
+  }
+}

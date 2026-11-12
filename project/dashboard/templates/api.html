@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-head">
+  <h1>REST API</h1>
+  <p class="lede">Everything on this site is also available to other software through a versioned REST API. Reading is open. Changing anything needs a signed-in role, and the role decides what is allowed.</p>
+</section>
+
+<div class="figures f4" id="apiFigures"></div>
+
+<section class="section">
+  <header><h2>Getting started</h2></header>
+  <div class="grid g2">
+    <div class="panel"><h3>Base address and sign-in</h3>
+      <p class="prose">All paths start with <code>/api/v1</code>. Sign in to get a token, then send it with each request in the <code>Authorization</code> header. Tokens last 8 hours.</p>
+      <pre class="code" id="apiCurl"></pre>
+      <p class="note">The machine-readable description is at <a href="api/v1/openapi.json" id="apiSpecLink">/api/v1/openapi.json</a> (OpenAPI 3.0). Errors always come back as <code>{"error": {"code", "message"}}</code>.</p>
+    </div>
+    <div class="panel"><h3>Roles</h3><p class="note">Checked by the API, and again by the passport ledger when an event is signed.</p>
+      <div class="table-wrap"><table class="compact"><thead><tr><th>Role</th><th>Passport view</th><th>May sign</th><th>Extra</th></tr></thead><tbody id="apiRoles"></tbody></table></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <header><h2>Endpoints</h2><p id="apiTryNote"></p></header>
+  <div id="apiEndpoints"></div>
+</section>
+
+<section class="section">
+  <header><h2>Database</h2><p>The API reads and writes one SQLite database, built from the pipeline's result files.</p></header>
+  <div class="panel flush table-wrap"><table>
+    <thead><tr><th>Table</th><th>Holds</th><th>Key</th><th>Links to</th><th class="num">Rows now</th></tr></thead>
+    <tbody id="apiTables"></tbody></table></div>
+</section>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/apidocs.js') }}"></script>{% endblock %}

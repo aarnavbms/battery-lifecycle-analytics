@@ -78,3 +78,18 @@ git checkout main                # back to the final version
 | `results/summary.json not found` | Run `python -m batterylife run --fast` |
 | `Raw calce data missing` | Only for `--refresh`; see section 5 |
 | Port 8050 in use | `set PORT=8060` then `python dashboard\app.py` |
+
+## Version 1.1: new pages
+
+Start the site as before (`python dashboard\app.py` or `run_dashboard.bat`). Install the three new packages first: `pip install -r requirements.txt`.
+
+| Page | What to do there |
+| --- | --- |
+| Viewing as (sidebar) | Choose a role. Public visitor sees the public passport tier; other roles see the full passport. |
+| Assess your data | Click "Continue as Assessor", then "Fleet of 12" or choose your own CSV. Click a row for that battery's chart, then "Open passport" or the PDF. |
+| Passports | As Recycler or Repurposer, open an uploaded battery's passport and use "Record a lifecycle event". Laboratory passports are read-only. |
+| Network | Hover the circles and arrows for the measures. |
+| API | Open an endpoint and click "Send request". Requests use the role chosen in the sidebar. |
+| Models | The first chart under the error bars shows which signals each model depends on. |
+
+Demo passwords for API login are in `batterylife/service/demo_users.json`. To clear all uploads: `python -m batterylife db --reset`.

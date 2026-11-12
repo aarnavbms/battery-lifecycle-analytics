@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-head">
+  <h1>Assess your own battery data</h1>
+  <p class="lede">Give the system a file with one row per charge-discharge cycle. It works out each battery's health, forecasts the cycles it has left, grades it for a second life, and issues a signed Digital Battery Passport. Put several batteries in one file to get them ranked.</p>
+</section>
+
+<div class="callout" id="upGate" hidden>
+  <p><b>Assessing files and issuing passports is reserved for the Assessor role.</b> You are viewing as <span id="upRole">a public visitor</span>.</p>
+  <button class="primary" type="button" id="upSignIn">Continue as Assessor</button>
+</div>
+
+<section class="section" style="margin-top:0">
+  <div class="grid g2">
+    <form class="panel" id="upForm" autocomplete="off">
+      <h3>Your file</h3>
+      <div class="up-fields">
+        <label class="field"><span class="row">CSV file, up to 5 MB</span>
+          <input type="file" id="upFile" accept=".csv,text/csv,text/plain"></label>
+        <label class="field"><span class="row">Rated capacity of one battery, Ah</span>
+          <input type="number" id="upRated" min="0.01" max="1000" step="0.01" value="2.5" required></label>
+        <label class="field"><span class="row">Cell type</span>
+          <select id="upProfile">
+            <option value="other">Any Li-ion cell (uses measured capacity)</option>
+            <option value="nasa">18650, 2.0 Ah, like the NASA cells (adds the AI estimate)</option>
+            <option value="calce">LCO prismatic, 1.1 Ah, like the CALCE cells (adds the AI estimate)</option>
+          </select></label>
+        <label class="check"><input type="checkbox" id="upIssue" checked> Issue a signed passport for each battery</label>
+      </div>
+      <div class="toolbar" style="margin-top:14px">
+        <button class="primary" type="submit" id="upGo">Assess file</button>
+        <span class="up-or">or try a sample:</span>
+        <button class="ghost" type="button" data-sample="sample_fleet_12_cells_synthetic.csv" data-rated="2.5" data-profile="other">Fleet of 12</button>
+        <button class="ghost" type="button" data-sample="sample_single_cell_nasa_B0005.csv" data-rated="2.0" data-profile="nasa">One NASA cell</button>
+      </div>
+      <p class="note" id="upMsg" role="status" aria-live="polite"></p>
+    </form>
+    <div class="panel">
+      <h3>What the file needs</h3>
+      <div class="table-wrap"><table class="compact">
+        <thead><tr><th>Column</th><th>Needed</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td><code>cycle</code></td><td>Yes</td><td>Cycle number</td></tr>
+          <tr><td><code>capacity_ah</code></td><td>Yes*</td><td>Measured discharge capacity</td></tr>
+          <tr><td><code>cell_id</code></td><td>No</td><td>Battery name, for several batteries in one file</td></tr>
+          <tr><td><code>resistance_ohm</code></td><td>No</td><td>Internal resistance; its growth affects the grade</td></tr>
+          <tr><td><code>cc_charge_time_s</code>, <code>cv_charge_time_s</code>, <code>charge_v_rise_s</code></td><td>No</td><td>Charging signals for the AI estimate</td></tr>
+        </tbody></table></div>
+      <p class="note">*Capacity can be left out if all the charging signals and resistance are present and the cell type is one of the two trained types. Then health is estimated by the AI model alone, with no discharge test.</p>
+      <p class="note">Sample files:
+        <a href="samples/sample_fleet_12_cells_synthetic.csv" download>fleet of 12 (synthetic)</a>,
+        <a href="samples/sample_single_cell_nasa_B0005.csv" download>one NASA cell (real)</a>.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="upResult" hidden>
+  <header><h2 id="upTitle">Result</h2><p id="upSub"></p></header>
+  <div class="figures f4" id="upFigures"></div>
+  <div class="grid g2" style="margin-top:16px" id="upFleetRow">
+    <div class="panel"><h3>Fleet map</h3><p class="note">Each dot is a battery. Up and to the right is better: more health, more forecast life.</p><div id="upMap" class="chart"></div></div>
+    <div class="panel"><h3>Grades</h3><p class="note">How many batteries suit each second-life use.</p><div id="upGrades" class="chart"></div></div>
+  </div>
+  <div class="panel flush table-wrap" style="margin-top:16px">
+    <table>
+      <thead><tr><th class="num">Rank</th><th>Battery</th><th class="num">Health (SOH)</th><th class="num">Resistance</th><th class="num">Cycles left to 60%</th><th>Grade</th><th>Suggested use</th><th>Confidence</th><th>Passport</th></tr></thead>
+      <tbody id="upRows"></tbody>
+    </table>
+  </div>
+  <p class="note" id="upFailed"></p>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="panel"><h3 id="upCellTitle">Battery</h3><p class="note" id="upCellNote"></p><div id="upChart" class="chart"></div></div>
+    <div class="panel" id="upCell"></div>
+  </div>
+</section>
+
+<section class="section">
+  <header><h2>How to read the result</h2></header>
+  <div class="grid g3">
+    <div class="panel"><h3>Health</h3><p class="prose">Health is measured capacity divided by rated capacity, smoothed over nine cycles. If the file has charging signals for a trained cell type, the AI estimate is shown next to it so you can see how close the model is.</p></div>
+    <div class="panel"><h3>Cycles left</h3><p class="prose">Two trend methods extend the health curve to 80% and 60%. The range between them is shown. These trend forecasts are rough: on the laboratory cells they were off by a quarter to more than the full life. Treat them as a guide.</p></div>
+    <div class="panel"><h3>Confidence</h3><p class="prose">If the grade would change at the lower health bound, or between the two forecasts, the result is marked low confidence and a laboratory capacity test is recommended before the battery is redeployed.</p></div>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/assess.js') }}"></script>{% endblock %}

@@ -1,0 +1,47 @@
+{
+  "_comment": "Demo accounts for local use. Replace this file (or set BLA_USERS_FILE) and set BLA_DEMO=0 before any real deployment.",
+  "users": [
+    {
+      "username": "manufacturer",
+      "name": "Cell manufacturer",
+      "role": "manufacturer",
+      "password": "manufacturer-60f78046"
+    },
+    {
+      "username": "oem",
+      "name": "Vehicle maker",
+      "role": "oem",
+      "password": "oem-7117d6ab"
+    },
+    {
+      "username": "assessor",
+      "name": "AI lifecycle assessor",
+      "role": "assessor",
+      "password": "assessor-12b8b147"
+    },
+    {
+      "username": "repurposer",
+      "name": "Second-life integrator",
+      "role": "repurposer",
+      "password": "repurposer-a598530c"
+    },
+    {
+      "username": "recycler",
+      "name": "Certified recycler",
+      "role": "recycler",
+      "password": "recycler-29572520"
+    },
+    {
+      "username": "regulator",
+      "name": "Market surveillance authority",
+      "role": "regulator",
+      "password": "regulator-4bd32ff3"
+    },
+    {
+      "username": "admin",
+      "name": "System administrator",
+      "role": "admin",
+      "password": "admin-43d1e0c8"
+    }
+  ]
+}

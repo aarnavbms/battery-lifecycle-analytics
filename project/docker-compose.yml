@@ -1,0 +1,15 @@
+# docker compose up --build      then open http://localhost:8050
+services:
+  web:
+    build: .
+    ports:
+      - "8050:8050"
+    environment:
+      BLA_DEMO: "1"            # one-click demo roles; set to "0" to require passwords
+      # BLA_SECRET: change-me  # token signing secret; generated on first start if not set
+    volumes:
+      - battery-data:/app/results     # keeps the database, uploads and local signing keys
+    restart: unless-stopped
+
+volumes:
+  battery-data:

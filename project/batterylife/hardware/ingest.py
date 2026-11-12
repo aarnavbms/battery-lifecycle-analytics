@@ -71,9 +71,14 @@ def read_serial(port: str, baud: int, minutes: float, log_to: Path | None):
 def record_in_passport(cycles: pd.DataFrame, rated_ah: float, source: str = "battery monitoring board",
                        folder: Path = PASSPORT_DIR) -> dict:
     """Append BMS measurements and an AI grading to the cell's passport."""
-    reg = store.create_actors()
-    store.save_registry(reg)
-    A = reg.actors
+    actors_file = folder / "actors.json"
+    if actors_file.exists():
+        reg = store.signing_registry(path=actors_file)
+    else:
+        reg = store.create_actors()
+        store.save_registry(reg, actors_file)
+    A = {aid: store.signer(reg, role, path=actors_file)
+         for aid, role in (("MFR-01", "manufacturer"), ("BMS-01", "bms"), ("AI-ASSESSOR", "assessor"))}
     cid = str(cycles["cell_id"].iloc[0])
     pid = f"DBP-{cid}" if cid.upper().startswith("HW") else f"DBP-HW-{cid}"
     now = datetime.now(timezone.utc).replace(microsecond=0, tzinfo=None)
@@ -107,7 +112,7 @@ def record_in_passport(cycles: pd.DataFrame, rated_ah: float, source: str = "bat
         "confidence": a.confidence, "recommendation": a.recommendation},
         (now + timedelta(seconds=len(cycles) + 2)).isoformat())
     store.save_passport(p, folder)
-    v = verify(p, store.load_registry())
+    v = verify(p, store.load_registry(actors_file))
     return {"passport_id": pid, "events": len(p.events), "valid": v["valid"], "grade": a.grade,
             "application": a.application, "soh": float(last["soh"])}
 

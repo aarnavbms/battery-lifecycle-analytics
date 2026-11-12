@@ -26,6 +26,16 @@
     </div>
     {% endfor %}
   </nav>
+  <div class="who">
+    <label for="roleSelect">Viewing as</label>
+    <select id="roleSelect" aria-describedby="whoHint"><option value="public">Public visitor</option></select>
+    <form id="whoForm" hidden autocomplete="off">
+      <input name="username" type="text" aria-label="Username" placeholder="Username" required>
+      <input name="password" type="password" aria-label="Password" placeholder="Password" required>
+      <button type="submit">Sign in</button>
+    </form>
+    <p id="whoHint">Public tier: restricted passport data is hidden.</p>
+  </div>
   <div class="side-foot">
     <button class="theme" id="themeToggle" type="button" aria-label="Switch light or dark theme">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9z"/></svg><span>Theme</span>

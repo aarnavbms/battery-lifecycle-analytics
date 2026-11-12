@@ -122,6 +122,7 @@ const APP = (() => {
       }
       detail = `Event ${target}: grade changed to A and re-signed with a key that does not belong to the assessor`;
     }
+    if (!mayFull()) detail = detail.replace(/SOH changed from [0-9.]+% to/, "a restricted SOH value was raised to");
     const result = await verify(full, bodies);
     return { attack, description: D.attacks[attack], detail, target_index: target, result,
              note: "Applied to a copy in your browser. The original passport is unchanged." };
@@ -171,12 +172,24 @@ const APP = (() => {
   }
 
   // ------------------------------------------------------------ API shim
+  // The hosted copy has no server, so roles are simulated in the browser: the same views are shown
+  // or hidden, but nothing is being protected (all data on this page is already public).
+  const mayFull = () => typeof UI !== "undefined" && UI.can("passport:read_full");
   async function get(url) {
+    if (/^\/api\/passport\/[^/]+\?access=full$/.test(url) && !mayFull())
+      throw Object.assign(new Error("The full passport is restricted. Choose a role under Viewing as."), { status: 403 });
     if (!(url in D.get)) throw new Error(`No data for ${url}`);
-    return clone(D.get[url]);
+    const out = clone(D.get[url]);
+    if (url === "/api/passports" && !mayFull()) out.forEach((p) => { p.grade = null; });
+    return out;
   }
   async function post(url, body) {
     if (url === "/api/assess") return assess(body || {});
+    if (url === "/api/v1/auth/demo") {
+      const r = D.get["/api/v1/auth/roles"].roles.find((x) => x.role === (body || {}).role);
+      if (!r) throw new Error("Unknown role.");
+      return { token: "hosted-demo", user: { username: r.role, name: r.description, role: r.role, permissions: r.permissions, may_sign: [] } };
+    }
     let m = url.match(/^\/api\/passport\/([^/]+)\/verify$/);
     if (m) return verify(clone(D.get[`/api/passport/${m[1]}?access=full`]), D.bodies[m[1]]);
     m = url.match(/^\/api\/passport\/([^/]+)\/tamper$/);
@@ -185,11 +198,13 @@ const APP = (() => {
   }
 
   // ------------------------------------------------------------ views (hash routing)
-  const VIEWS = ["overview", "cells", "models", "second-life", "passports", "hardware", "reports"];
+  const VIEWS = ["overview", "cells", "models", "second-life", "assess", "passports", "network", "api", "hardware", "reports"];
   const inits = {}, started = {}, params = {};
   const register = (name, fn) => { inits[name] = fn; };
   const param = (k) => params[k];
   function show(name) {
+    const qi = name.indexOf("?");                      // #passports?id=DBP-...  (links from QR codes)
+    if (qi >= 0) { new URLSearchParams(name.slice(qi + 1)).forEach((v, k) => { params[k] = v; }); name = name.slice(0, qi); }
     if (!VIEWS.includes(name)) name = "overview";
     document.querySelectorAll("[data-view]").forEach((s) => { s.hidden = s.dataset.view !== name; });
     document.querySelectorAll("nav a[data-nav]").forEach((a) => a.toggleAttribute("aria-current", a.dataset.nav === name));
@@ -211,5 +226,84 @@ const APP = (() => {
   window.addEventListener("hashchange", () => show(location.hash.slice(1)));
   document.addEventListener("DOMContentLoaded", () => show(location.hash.slice(1) || "overview"));
 
-  return { get, post, register, param, go, verify, tamper, assess };
+  // ------------------------------------------------------------ file assessment in the browser
+  // Sample files return the server's stored result. Any other file gets a lighter analysis here:
+  // measured health and a straight-line forecast (the server adds the fade model, the AI estimate
+  // and signed passports).
+  const ALIAS = { cycle: ["cycle", "cycle_index", "cycle_number", "cycle_no", "n"],
+    capacity_ah: ["capacity_ah", "capacity", "discharge_capacity_ah", "discharge_capacity", "qd", "cap_ah"],
+    cell_id: ["cell_id", "cell", "battery_id", "battery", "id"],
+    resistance_ohm: ["resistance_ohm", "resistance", "ir", "internal_resistance_ohm", "r_ohm"] };
+  const median = (a) => { const s = a.slice().sort((x, y) => x - y), m = s.length >> 1; return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2; };
+  const r4 = (x) => Math.round(x * 1e4) / 1e4;
+  function linearRul(c, h, thr, window, horizon) {
+    const n = Math.min(c.length, 2 * window), x = c.slice(-n), y = h.slice(-n);
+    const mx = x.reduce((a, b) => a + b, 0) / n, my = y.reduce((a, b) => a + b, 0) / n;
+    let sxy = 0, sxx = 0; for (let i = 0; i < n; i++) { sxy += (x[i] - mx) * (y[i] - my); sxx += (x[i] - mx) ** 2; }
+    const slope = sxx ? sxy / sxx : 0, now = my + slope * (c.at(-1) - mx);
+    if (now <= thr) return 0;
+    if (slope >= 0) return horizon;
+    return Math.min((thr - now) / slope, horizon);
+  }
+  function liteCell(id, rows, rated) {
+    rows = rows.filter((r) => Number.isFinite(r.cycle) && r.capacity_ah > 0).sort((a, b) => a.cycle - b.cycle);
+    if (!rows.length) throw new Error("no usable rows");
+    const c = rows.map((r) => r.cycle), soh = rows.map((r) => r.capacity_ah / rated);
+    if (Math.max(...soh) > 1.3) throw new Error("capacity is far above the rated capacity; check the rated capacity");
+    const smooth = soh.map((_, i) => median(soh.slice(Math.max(0, i - 4), i + 5)));
+    const resid = soh.map((v, i) => v - smooth[i]), mr = median(resid);
+    const half = Math.max(0.01, soh.length >= 5 ? 1.96 * 1.4826 * median(resid.map((v) => Math.abs(v - mr))) : 0.01);
+    const now = smooth.at(-1), res = rows.map((r) => r.resistance_ohm).filter((v) => Number.isFinite(v));
+    const rg = res.length >= 2 && median(res.slice(0, 5)) > 0 ? median(res.slice(-5)) / median(res.slice(0, 5)) : null;
+    const notes = ["Quick analysis in your browser: straight-line forecast only, and no outlier cleaning."], rul = {};
+    const horizon = Math.min(Math.max(3 * c.at(-1), 500), 5000);
+    if (rows.length >= 10 && c.at(-1) > c[0]) {
+      const w = Math.max(5, Math.floor(rows.length / 6));
+      for (const [k, thr] of [["to_80", 0.8], ["to_60", 0.6]]) {
+        const v = Math.round(linearRul(c, smooth, thr, w, horizon));
+        rul[k] = { cycles: v, lo: v, hi: v, beyond_horizon: v >= horizon, linear: v, fade_model: null };
+      }
+    } else notes.push("Fewer than 10 cycles, so no remaining-life forecast was made.");
+    const left = rul.to_60 ? rul.to_60.cycles : null;
+    const a = assess({ soh: now, halfwidth: half, resistance_growth: rg, cycles: left, cycles_lo: left });
+    const step = Math.max(1, Math.floor(rows.length / 300)), idx = rows.map((_, i) => i).filter((i) => i % step === 0 || i === rows.length - 1);
+    return { cell_id: id, cycles: rows.length, last_cycle: c.at(-1), rated_capacity_ah: rated, soh: r4(now), soh_lo: r4(now - half), soh_hi: r4(now + half),
+      soh_source: "measured", soh_method: "measured capacity / rated capacity", stage: now >= 0.8 ? "First life" : now >= 0.6 ? "Second-life window" : "End of life",
+      resistance_growth: rg == null ? null : Math.round(rg * 1000) / 1000, rul, model_check: null, grade: a.grade, application: a.application,
+      confidence: a.confidence, recommendation: a.recommendation, reasons: a.reasons, grade_at_lower_bound: a.grade_at_lower_bound,
+      service_years: a.service_years, value: a.value, notes,
+      series: { cycle: idx.map((i) => c[i]), soh: idx.map((i) => r4(soh[i])), soh_smooth: idx.map((i) => r4(smooth[i])), soh_est: null } };
+  }
+  async function upload(form) {
+    const file = form.get("file"), rated = +form.get("rated_capacity_ah");
+    if (D.samples[file.name]) return clone(D.samples[file.name]);
+    if (!(rated >= 0.01 && rated <= 1000)) throw new Error("Rated capacity must be between 0.01 and 1000 Ah.");
+    if (file.size > 5 * 1024 * 1024) throw new Error("File is larger than 5 MB.");
+    const lines = (await file.text()).split(/\r?\n/).filter((l) => l.trim() && !l.startsWith("#"));
+    if (lines.length < 2) throw new Error("The file has no data rows.");
+    const sep = [",", ";", "\t"].sort((a, b) => lines[0].split(b).length - lines[0].split(a).length)[0];
+    const head = lines[0].split(sep).map((h) => h.trim().replace(/^"|"$/g, "").toLowerCase().replace(/ /g, "_"));
+    const col = {}; for (const [std, names] of Object.entries(ALIAS)) { const i = head.findIndex((h) => names.includes(h)); if (i >= 0) col[std] = i; }
+    if (col.cycle == null) throw new Error("No 'cycle' column found.");
+    if (col.capacity_ah == null) throw new Error("This hosted copy needs a 'capacity_ah' column. The AI estimate from charging signals runs on the server version.");
+    const groups = new Map();
+    for (const l of lines.slice(1)) {
+      const f = l.split(sep), id = col.cell_id == null ? "CELL-1" : f[col.cell_id].trim().replace(/^"|"$/g, "");
+      if (!groups.has(id)) groups.set(id, []);
+      groups.get(id).push({ cycle: +f[col.cycle], capacity_ah: +f[col.capacity_ah], resistance_ohm: col.resistance_ohm == null ? NaN : +f[col.resistance_ohm] });
+    }
+    if (groups.size > 200) throw new Error("More than 200 batteries in one file.");
+    const results = [], failed = [];
+    for (const [id, rows] of groups) { try { results.push(liteCell(id, rows, rated)); } catch (e) { failed.push({ cell_id: id, problem: e.message }); } }
+    if (!results.length) throw new Error(`No battery in the file could be analysed: ${failed[0].problem}.`);
+    const rank = { A: 0, B: 1, C: 2, D: 3 };
+    results.sort((a, b) => rank[a.grade] - rank[b.grade] || b.soh - a.soh).forEach((r, i) => { r.rank = i + 1; });
+    const grades = { A: 0, B: 0, C: 0, D: 0 }; results.forEach((r) => { grades[r.grade]++; });
+    return { upload_id: "in your browser", filename: file.name, profile: "other", rated_capacity_ah: rated, batteries: results.length, rows: lines.length - 1,
+      grades, low_confidence: results.filter((r) => r.confidence === "low").length,
+      mean_soh: r4(results.reduce((a, r) => a + r.soh, 0) / results.length), results, failed };
+  }
+  const openPdf = async (pid, access) => { window.open(`passports/${encodeURIComponent(pid)}${access === "public" ? ".public" : ""}.pdf`, "_blank", "noopener"); };
+
+  return { get, post, register, param, go, verify, tamper, assess, upload, openPdf };
 })();

@@ -1,8 +1,11 @@
 (async () => {
-  const list = await UI.get("/api/passports");
+  await UI.ready;
+  let list = await UI.get("/api/passports");
   const attacks = await UI.get("/api/attacks");
   let current = new URLSearchParams(location.search).get("id") || list[0].passport_id;
-  let access = "full";
+  if (!list.some((p) => p.passport_id === current)) current = list[0].passport_id;
+  const mayFull = () => UI.can("passport:read_full");
+  let access = mayFull() ? "full" : "public";
   let P = null, flagged = new Set();
 
   const CHECK_TEXT = {
@@ -26,19 +29,31 @@
     state_of_health: "State of health", lifecycle_decision: "Lifecycle decision",
   };
 
+  const ORIGIN_TEXT = { lab: "Laboratory cells", hardware: "Bench hardware", upload: "Uploaded batteries" };
   function drawList() {
-    document.getElementById("ppList").innerHTML = list.map((p) => `
+    let last = null;
+    // show the newest upload only; older ones stay available through the API
+    const ups = list.filter((p) => p.origin === "upload");
+    const newest = ups.reduce((a, p) => (!a || p.updated_at > a.updated_at ? p : a), null);
+    const batch = (p) => p.passport_id.split("-")[2];
+    const shown = list.filter((p) => p.origin !== "upload" || p.passport_id === current || batch(p) === batch(newest));
+    const hiddenN = list.length - shown.length;
+    document.getElementById("ppList").innerHTML = shown.map((p) => {
+      const head = p.origin !== last && list.some((x) => x.origin !== list[0].origin) ? `<span class="pp-group">${ORIGIN_TEXT[p.origin] || ""}</span>` : "";
+      last = p.origin;
+      return `${head}
       <button class="pp-item" type="button" data-id="${p.passport_id}" aria-pressed="${p.passport_id === current}">
         <span class="id">${p.passport_id}</span>
-        <span class="meta">${UI.statusChip(p.status)} ${UI.gradeChip(p.grade)} <span>${p.events} events</span></span>
+        <span class="meta">${UI.statusChip(p.status)} ${p.grade ? UI.gradeChip(p.grade) : ""} <span>${p.events} events</span></span>
         <span class="meta">${UI.verdict(p.valid, "Signatures verified", "Verification failed")}</span>
-      </button>`).join("");
+      </button>`; }).join("") + (hiddenN ? `<span class="pp-group">${hiddenN} passports from older uploads are available through the API.</span>` : "");
     document.querySelectorAll(".pp-item").forEach((b) => b.addEventListener("click", () => { current = b.dataset.id; flagged = new Set(); load(); }));
   }
 
   async function load() {
     history.replaceState(null, "", `?id=${current}`);
     drawList();
+    if (access === "full" && !mayFull()) access = "public";
     P = await UI.get(`/api/passport/${current}?access=${access === "public" ? "public" : "full"}`);
     render();
   }
@@ -63,8 +78,9 @@
       case "SECOND_LIFE_GRADING": return `Grade ${d.grade}: ${UI.esc(d.application)}, ${d.confidence} confidence`;
       case "MANUFACTURED": return `${UI.esc(d.chemistry)}, rated ${d.rated_capacity_ah} Ah, initial ${UI.num(d.initial_capacity_ah, 3)} Ah`;
       case "CARBON_FOOTPRINT_DECLARED": return `${d.kgco2e_per_kwh} kg CO2e per kWh, ${UI.num(d.total_kgco2e, 3)} kg for this cell`;
-      case "FIRST_LIFE_RETIRED": case "SENT_TO_RECYCLING": return `Cycle ${d.cycle}: ${UI.esc(d.reason)}`;
-      case "REPURPOSED": return `Cycle ${d.cycle}: now ${UI.esc(d.application)}`;
+      case "FIRST_LIFE_RETIRED": case "SENT_TO_RECYCLING": return `${d.cycle == null ? "" : `Cycle ${d.cycle}: `}${UI.esc(d.reason || "")}`;
+      case "REPURPOSED": return `${d.cycle == null ? "" : `Cycle ${d.cycle}: `}now ${UI.esc(d.application || "")}`;
+      case "RECYCLED": return UI.esc([d.recovered, d.facility].filter(Boolean).join(", "));
       default: return UI.esc(d.application || "");
     }
   }
@@ -85,7 +101,10 @@
     const g = s.general_information || {};
     const latest = s.state_of_health && s.state_of_health.latest_assessment;
     const fillSoh = latest ? latest.soh : null;
-    document.getElementById("ppDetail").innerHTML = `
+    const role = UI.user.role, signable = (UI.user.may_sign || []).filter((t) => t !== "MANUFACTURED" && t !== "CARBON_FOOTPRINT_DECLARED");
+    const banner = mayFull() ? "" : `<div class="callout pp-banner"><p><b>You are seeing the public tier</b>, the part a QR code on the battery shows to anyone. Health records and the second-life decision are restricted to roles with a legitimate interest.</p>
+      <button class="ghost" type="button" data-signin="recycler">View as Recycler</button> <button class="ghost" type="button" data-signin="regulator">View as Regulator</button></div>`;
+    document.getElementById("ppDetail").innerHTML = `${banner}
       <article class="passport" aria-label="Passport document ${P.passport_id}">
         <header class="pp-doc-head">
           <div><span class="pp-issuer">Regulation (EU) 2023/1542, Annex XIII</span>
@@ -106,7 +125,7 @@
             <div><dt>Manufactured</dt><dd>${UI.esc(g.manufacture_date || "–")}</dd></div>
             <div><dt>Status</dt><dd>${UI.statusChip(P.status)}</dd></div>
             <div><dt>Signed events</dt><dd>${P.events.length}${access === "public" ? " public" : ""}</dd></div>
-            <div><dt>Reader access</dt><dd>${access === "public" ? "Public (QR code)" : "Legitimate interest"}</dd></div>
+            <div><dt>Reader access</dt><dd>${access === "public" ? "Public (QR code)" : `Legitimate interest (${UI.esc(UI.ROLE_LABEL[role] || role)})`}</dd></div>
           </dl>
         </div>
         <p class="pp-hash">Chain head <span class="mono">${P.head_hash}</span></p>
@@ -116,8 +135,9 @@
 
       <div class="pp-controls">
         <div class="toolbar" role="group" aria-label="Access level">
-          <button class="seg" type="button" data-access="full" aria-pressed="${access === "full"}">Full view</button>
+          <button class="seg" type="button" data-access="full" aria-pressed="${access === "full"}" ${mayFull() ? "" : 'disabled title="Needs a signed-in role with a legitimate interest"'}>${mayFull() ? "" : UI.ICON.lock}Full view</button>
           <button class="seg" type="button" data-access="public" aria-pressed="${access === "public"}">Public view (QR code)</button>
+          <button class="ghost" type="button" id="btnPdf">PDF with QR code</button>
         </div>
         <div class="toolbar">
           <button class="primary" type="button" id="btnVerify">Verify passport</button>
@@ -143,7 +163,39 @@
             <span class="d">${eventLine(e)}</span><br><span class="hash">hash ${e.hash.slice(0, 24)}… signature ${e.signature.slice(0, 16)}…</span></span>
           <span class="acc"><span class="pill">${P.event_meta[e.type].access === "public" ? "public" : "restricted"}</span></span></li>`).join("")}
         </ol>
-      </div>`;
+      </div>
+      ${!UI.isStatic && P.origin !== "lab" && signable.length ? `<form class="panel event-form" id="evForm" style="margin-top:16px">
+        <h3>Record a lifecycle event</h3>
+        <p class="note">As ${UI.esc(UI.ROLE_LABEL[role] || role)} you may sign the event types listed. The server signs with your role's key and appends it to the chain.</p>
+        <label class="field"><span class="row">Event type</span><select id="evType">${signable.map((t) => `<option value="${t}">${EVENT_TEXT[t] || t}</option>`).join("")}</select></label>
+        <label class="field"><span class="row">Event data (JSON)</span><textarea id="evData" rows="4" spellcheck="false"></textarea></label>
+        <div class="toolbar"><button class="primary" type="submit">Sign and append</button><span class="status-line" id="evMsg" role="status"></span></div>
+      </form>` : ""}
+      ${!UI.isStatic && P.origin === "lab" && signable.length ? `<p class="note" style="margin-top:12px">Laboratory passports are archived results and read-only. To record events as ${UI.esc(UI.ROLE_LABEL[role] || role)}, open a passport created from an upload.</p>` : ""}`;
+
+    document.querySelectorAll("button[data-signin]").forEach((b) => b.addEventListener("click", () => UI.signIn(b.dataset.signin)));
+    document.getElementById("btnPdf").addEventListener("click", () => UI.openPdf(current, access).catch((e) => { document.getElementById("verifyOut").textContent = e.message; }));
+    const evForm = document.getElementById("evForm");
+    if (evForm) {
+      const TEMPLATE = { SOH_ASSESSMENT: { cycle: 0, soh: 0.8, soh_lo: 0.78, soh_hi: 0.82, resistance_growth: 1.1, method: "manual capacity test" },
+        RUL_PREDICTION: { cycle: 0, threshold: 0.6, rul_cycles: 200, rul_lo: 150, rul_hi: 260, method: "manual estimate" },
+        SECOND_LIFE_GRADING: { grade: "B", application: "Grid / home energy storage", confidence: "high", recommendation: "Repurpose" },
+        FIRST_LIFE_START: { application: "EV traction" }, FIRST_LIFE_RETIRED: { cycle: 0, reason: "SOH reached 80%" },
+        REPURPOSED: { application: "Home energy storage", new_status: "repurposed" },
+        SENT_TO_RECYCLING: { reason: "end of second life" }, RECYCLED: { recovered: "Co, Li, Ni, Cu recovered", facility: "certified recycler" } };
+      const fill = () => { document.getElementById("evData").value = JSON.stringify(TEMPLATE[document.getElementById("evType").value] || {}, null, 2); };
+      document.getElementById("evType").addEventListener("change", fill); fill();
+      evForm.addEventListener("submit", async (ev) => {
+        ev.preventDefault();
+        const m = document.getElementById("evMsg");
+        let data; try { data = JSON.parse(document.getElementById("evData").value); } catch (e) { m.textContent = "The event data is not valid JSON."; return; }
+        try {
+          const r = await UI.request("POST", `/api/v1/passports/${encodeURIComponent(current)}/events`, { type: document.getElementById("evType").value, data });
+          list = await UI.get("/api/passports"); await load();
+          document.getElementById("verifyOut").innerHTML = `<div class="callout good" style="margin-top:14px">${UI.verdict(r.valid, `Event ${r.event.index} signed by ${UI.esc(r.event.actor_id)} and appended. The chain still verifies.`, "Appended, but verification failed")}</div>`;
+        } catch (e) { m.textContent = e.message; }
+      });
+    }
 
     document.querySelectorAll("button[data-access]").forEach((b) => b.addEventListener("click", () => { access = b.dataset.access; flagged = new Set(); load(); }));
     document.getElementById("btnVerify").addEventListener("click", doVerify);
@@ -232,5 +284,6 @@
   }
 
   UI.onTheme(() => { if (P) drawSoh(); });
+  UI.onUser(async () => { access = mayFull() ? "full" : "public"; flagged = new Set(); list = await UI.get("/api/passports"); load(); });
   load();
 })();

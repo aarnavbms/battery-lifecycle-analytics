@@ -40,6 +40,38 @@ def create_actors(keys_dir: Path = KEYS_DIR) -> ActorRegistry:
     return reg
 
 
+def signing_registry(keys_dir: Path = KEYS_DIR, path: Path = ACTORS_FILE) -> ActorRegistry:
+    """Actor directory with private keys attached where this machine holds them.
+
+    Unlike create_actors, this never replaces a published public key: an actor
+    whose private key is not on this machine stays verify-only.
+    """
+    reg = load_registry(path) if path.exists() else ActorRegistry()
+    for a in reg.actors.values():
+        key_path = keys_dir / f"{a.actor_id}.pem"
+        if key_path.exists():
+            key = crypto.load_private(key_path)
+            if crypto.public_key_b64(key) == a.public_key:
+                a._private = key
+    return reg
+
+
+def signer(reg: ActorRegistry, role: str, keys_dir: Path = KEYS_DIR, path: Path = ACTORS_FILE):
+    """An actor of this role that can sign here. If none exists (for example on
+    a fresh clone, where private keys are not shipped), a new local actor is
+    enrolled and its public key is added to the directory."""
+    for a in reg.actors.values():
+        if a.role == role and a._private is not None:
+            return a
+    n = 1
+    while f"{role.upper()}-LOCAL-{n}" in reg.actors:
+        n += 1
+    a = reg.create(f"{role.upper()}-LOCAL-{n}", f"Local {role} node (enrolled on this machine)", role)
+    crypto.save_private(a._private, keys_dir / f"{a.actor_id}.pem")
+    save_registry(reg, path)
+    return a
+
+
 def save_registry(reg: ActorRegistry, path: Path = ACTORS_FILE) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(reg.to_dict(), indent=2))

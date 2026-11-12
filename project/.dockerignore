@@ -1,0 +1,11 @@
+.git
+.github
+__pycache__
+*.pyc
+.pytest_cache
+data/raw
+site
+vendor
+results/battery.db
+results/keys
+docs/screenshots

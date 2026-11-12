@@ -17,6 +17,13 @@
     </div>
   </div>
   <div class="grid g2" style="margin-top:16px">
+    <div class="panel"><h3>Which signals the chosen model depends on</h3><p class="note" id="permNote">Permutation importance on unseen cells: how much the error rises when one signal is shuffled.</p><div id="perm" class="chart short"></div></div>
+    <div class="panel"><h3>How to read this</h3>
+      <p class="prose">Each model is trained on three cells. On the fourth, one input column at a time is shuffled, which breaks its link to health. If the error jumps, the model was relying on that signal. If nothing changes, the model ignores it.</p>
+      <p class="prose" id="permText"></p>
+      <p class="note">Unlike the built-in importance of tree models (next row), this works for any model and is measured on data the model never saw.</p></div>
+  </div>
+  <div class="grid g2" style="margin-top:16px">
     <div class="panel"><h3>What the Gradient Boosting model relies on</h3><p class="note">Share of impurity reduction, averaged over the four folds.</p><div id="imp" class="chart short"></div></div>
     <div class="panel"><h3>Signals vs SOH (correlation)</h3><p class="note">Pearson r on cleaned cycles. Positive means the signal falls as the cell ages.</p><div id="corr" class="chart short"></div></div>
   </div>

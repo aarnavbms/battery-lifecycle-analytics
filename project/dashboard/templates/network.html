@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-head">
+  <h1>The passport network</h1>
+  <p class="lede">Every signed passport event is an interaction between an actor and a battery. Read together, the events form a network: who hands batteries to whom, and which lifecycle steps follow which. Network measures show who the passport system depends on most.</p>
+</section>
+
+<div class="figures f4" id="netFigures"></div>
+<p class="callout good" id="netFinding" style="margin-top:16px"></p>
+
+<section class="section">
+  <header><h2>Who hands batteries to whom</h2><p>An arrow from A to B is drawn each time B signs the next event after A on the same battery. Thicker arrows mean more hand-offs.</p></header>
+  <div class="grid g57">
+    <div class="panel"><h3>Hand-off network of actors</h3><p class="note">Circle size shows PageRank. Hover a circle or an arrow for its numbers.</p><div id="netActors" class="chart net" role="img" aria-label="Directed network of passport actors"></div></div>
+    <div class="panel"><h3>Actor measures</h3>
+      <div class="table-wrap"><table class="compact">
+        <thead><tr><th>Actor</th><th class="num">Batteries</th><th class="num">Events</th><th class="num">In</th><th class="num">Out</th><th class="num">Betweenness</th><th class="num">PageRank</th></tr></thead>
+        <tbody id="netActorRows"></tbody></table></div>
+      <p class="note" id="netActorStats"></p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <header><h2>Which step follows which</h2><p>The same events as a process map: an arrow from one event type to the next one recorded on the same battery.</p></header>
+  <div class="grid g75">
+    <div class="panel"><h3>Process network of lifecycle events</h3><p class="note">Circle size shows how often the step occurs in a transition.</p><div id="netProcess" class="chart net" role="img" aria-label="Directed network of lifecycle event types"></div></div>
+    <div class="panel"><h3>Lifecycle paths taken</h3><p class="note">Milestones each battery passed, in order. Repeated health checks are left out.</p>
+      <ol class="paths" id="netPaths"></ol>
+      <p class="note" id="netProcStats"></p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <header><h2>How to read the measures</h2></header>
+  <div class="grid g4">
+    <div class="panel"><h3>In and out</h3><p class="prose">Weighted degree. In counts hand-offs an actor receives; out counts hand-offs it passes on.</p></div>
+    <div class="panel"><h3>Betweenness</h3><p class="prose">Share of shortest paths between other actors that pass through this one. High means it is a broker: remove it and others are cut off.</p></div>
+    <div class="panel"><h3>PageRank</h3><p class="prose">Importance from incoming hand-offs, weighted by how important the senders are.</p></div>
+    <div class="panel"><h3>Density and reciprocity</h3><p class="prose">Density is the share of possible links that exist. Reciprocity is the share of links that also run the other way.</p></div>
+  </div>
+  <p class="note" style="margin-top:14px">This network is small because the study has nine batteries and six registered actors. The method is the same at any scale: it is computed from the signed events with NetworkX, so new passports and actors extend it automatically.</p>
+</section>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/network.js') }}"></script>{% endblock %}

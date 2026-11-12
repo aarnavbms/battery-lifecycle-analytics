@@ -60,17 +60,102 @@ const UI = (() => {
     return Plotly.react(node, traces, layout(lay), config);
   }
 
-  async function get(url) {
-    const r = await fetch(url);
-    if (!r.ok) throw new Error(`${url}: ${r.status}`);
-    return r.json();
-  }
-  async function post(url, body) {
-    const r = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" },
-                                 body: JSON.stringify(body || {}) });
-    const j = await r.json();
-    if (!r.ok) throw new Error(j.error || r.status);
+  // ---------------------------------------------------------------- accounts and requests
+  // A signed-in role is kept as a bearer token for this browser tab. Every request sends it,
+  // and the server decides what that role may see or do.
+  const PUBLIC_USER = { username: null, name: "Public visitor", role: "public", permissions: [], may_sign: [] };
+  let token = null, user = PUBLIC_USER;
+  try { token = sessionStorage.getItem("bla-token"); } catch (e) {}
+  const userFns = [];
+  const self = {};
+
+  async function request(method, url, body) {
+    const opt = { method, headers: token ? { Authorization: `Bearer ${token}` } : {} };
+    if (body instanceof FormData) opt.body = body;
+    else if (body !== undefined) { opt.headers["Content-Type"] = "application/json"; opt.body = JSON.stringify(body || {}); }
+    const r = await fetch(url, opt);
+    if (r.status === 204) return null;
+    let j = null;
+    try { j = await r.json(); } catch (e) { /* not JSON */ }
+    if (!r.ok) {
+      const msg = j && j.error ? (j.error.message || j.error) : `${url}: ${r.status}`;
+      throw Object.assign(new Error(msg), { status: r.status });
+    }
     return j;
+  }
+  const get = (url) => request("GET", url);
+  const post = (url, body) => request("POST", url, body || {});
+
+  const can = (perm) => user.permissions.includes(perm);
+  const onUser = (fn) => { userFns.push(fn); };
+  function setUser(u, t) {
+    user = u || PUBLIC_USER; token = t || null;
+    try { t ? sessionStorage.setItem("bla-token", t) : sessionStorage.removeItem("bla-token");
+          sessionStorage.setItem("bla-role", user.role); } catch (e) {}
+    drawWho();
+    userFns.forEach((fn) => fn(user));
+  }
+  async function signIn(role, username, password) {
+    if (!role || role === "public") { setUser(null, null); return user; }
+    const r = username ? await self.post("/api/v1/auth/login", { username, password })
+                       : await self.post("/api/v1/auth/demo", { role });
+    setUser(r.user, r.token);
+    return user;
+  }
+
+  // "Viewing as" control in the sidebar
+  let roleInfo = null;
+  const ROLE_LABEL = { public: "Public visitor", manufacturer: "Manufacturer", oem: "Vehicle maker", assessor: "Assessor",
+                       repurposer: "Repurposer", recycler: "Recycler", regulator: "Regulator", admin: "Administrator" };
+  function drawWho() {
+    const sel = document.getElementById("roleSelect");
+    if (!sel || !roleInfo) return;
+    sel.innerHTML = roleInfo.roles.map((r) => `<option value="${r.role}">${ROLE_LABEL[r.role] || r.role}</option>`).join("");
+    sel.value = user.role;
+    const hint = document.getElementById("whoHint");
+    hint.textContent = user.role === "public" ? "Public tier: restricted passport data is hidden."
+      : can("upload:create") ? "Full passports. May assess uploads and issue passports."
+      : can("audit:read") ? "Full passports and the audit log. Read-only."
+      : "Full passports. May sign events for this role.";
+  }
+  async function initWho() {
+    const sel = document.getElementById("roleSelect");
+    try { roleInfo = await self.get("/api/v1/auth/roles"); } catch (e) { return; }
+    if (token && !self.isStatic) {
+      try { const me = await self.get("/api/v1/auth/me"); user = me.role === "public" ? PUBLIC_USER : me; }
+      catch (e) { token = null; user = PUBLIC_USER; }
+    } else if (self.isStatic) {
+      let role = null; try { role = sessionStorage.getItem("bla-role"); } catch (e) {}
+      if (role && role !== "public") { try { const r = await self.post("/api/v1/auth/demo", { role }); user = r.user; token = r.token; } catch (e) {} }
+    }
+    drawWho();
+    if (!sel) return;
+    const form = document.getElementById("whoForm");
+    sel.addEventListener("change", async () => {
+      const role = sel.value;
+      if (form) form.hidden = true;
+      if (role !== "public" && !roleInfo.demo_sign_in && form) {       // real accounts: ask for the password
+        form.hidden = false; form.elements.username.value = role; form.elements.password.focus(); return;
+      }
+      try { await signIn(role); } catch (e) { sel.value = user.role; document.getElementById("whoHint").textContent = e.message; }
+    });
+    if (form) form.addEventListener("submit", async (ev) => {
+      ev.preventDefault();
+      try { await signIn(sel.value, form.elements.username.value, form.elements.password.value); form.hidden = true; form.reset(); }
+      catch (e) { document.getElementById("whoHint").textContent = e.message; }
+    });
+  }
+  let readyResolve;
+  const ready = new Promise((res) => { readyResolve = res; });
+  document.addEventListener("DOMContentLoaded", () => { initWho().finally(readyResolve); });
+
+  // multipart upload and PDF passports: the hosted (static) build replaces these
+  const upload = (form) => request("POST", "/api/v1/uploads", form);
+  async function openPdf(pid, access) {
+    const r = await fetch(`/api/v1/passports/${encodeURIComponent(pid)}/pdf${access === "public" ? "?access=public" : ""}`,
+                          { headers: token ? { Authorization: `Bearer ${token}` } : {} });
+    if (!r.ok) throw new Error("Could not create the PDF.");
+    window.open(URL.createObjectURL(await r.blob()), "_blank", "noopener");
   }
 
   const pct = (x, d = 1) => (x == null ? "–" : `${(x * 100).toFixed(d)}%`);
@@ -95,6 +180,9 @@ const UI = (() => {
     return s;
   }
 
-  return { dodge, css, onTheme, cellColor, gradeColor, plot, layout, get, post, pct, num, esc, ICON, verdict,
-           gradeChip, statusChip };
+  Object.assign(self, { dodge, css, onTheme, cellColor, gradeColor, plot, layout, get, post, request, pct, num, esc,
+                        ICON, verdict, gradeChip, statusChip, can, onUser, signIn, ready, upload, openPdf,
+                        isStatic: false, ROLE_LABEL });
+  Object.defineProperty(self, "user", { get: () => user });
+  return self;
 })();

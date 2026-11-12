@@ -540,3 +540,86 @@ code { font: 0.92em var(--mono); background: var(--surface-2); padding: 1px 5px;
 .console .panel h3 { color: var(--ink); }
 .all-reports { margin: 0 0 16px; }
 .report-pdf.inline { display: inline-flex; padding: 11px 18px; }
+
+/* =====================================================================
+   Platform v4: roles, uploads, network, API
+   ===================================================================== */
+.who { display: grid; gap: 6px; padding: 12px 10px; margin: 0 2px; border: 1px solid var(--hero-line); border-radius: 10px; background: rgba(255, 255, 255, .04); }
+.who label { font: 600 11.5px/1 var(--text); color: var(--hero-ink-2); }
+.who select, .who input { width: 100%; background: #10293f; color: var(--hero-ink); border: 1px solid var(--hero-line); border-radius: 8px;
+  font: 600 14px var(--display); padding: 7px 9px; min-width: 0; }
+.who form { display: grid; gap: 6px; }
+.who form button { background: #2fc59a; color: #062418; border: 0; border-radius: 8px; padding: 7px 10px; font: 600 13px var(--display); cursor: pointer; }
+.who p { margin: 0; font-size: 12px; line-height: 1.4; color: var(--hero-ink-2); }
+.figures.f4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.prose { margin: 0 0 8px; color: var(--ink-2); font-size: 14.5px; max-width: 70ch; }
+.callout p { margin: 0 0 10px; }
+#upGate { margin-bottom: 18px; }
+.up-fields { display: grid; gap: 14px; }
+.up-fields input[type=file] { font: 14px var(--text); color: var(--ink); max-width: 100%; }
+.up-fields select { width: 100%; }
+label.check { display: flex; gap: 8px; align-items: center; font-size: 14px; color: var(--ink-2); }
+label.check input { accent-color: var(--accent); width: 16px; height: 16px; }
+.up-or { color: var(--muted); font-size: 13.5px; }
+form :disabled { opacity: .55; cursor: not-allowed; }
+table.compact th, table.compact td { padding: 7px 10px; font-size: 13.5px; vertical-align: top; }
+.pm { color: var(--muted); font-size: 12.5px; }
+.sub { color: var(--muted); font-size: 12.5px; }
+.warn { color: var(--warn-ink); font-weight: 600; display: inline-flex; gap: 6px; align-items: center; }
+tbody tr[aria-selected="true"] { background: var(--accent-wash); box-shadow: inset 3px 0 0 var(--accent); }
+a.btn { display: inline-block; background: var(--accent); color: #fff; border-radius: 8px; padding: 9px 16px; font: 600 14px var(--display); text-decoration: none; }
+.small { font-size: 12.5px; color: var(--muted); }
+.note .icon { width: 14px; height: 14px; vertical-align: -2px; color: var(--warn-ink); }
+.chart.net { height: 380px; }
+.paths { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 10px; }
+.paths li { display: grid; gap: 3px; padding: 10px 12px; border: 1px solid var(--hair); border-radius: 8px; background: var(--surface-2); font-size: 13.5px; }
+.paths li span { color: var(--ink-2); line-height: 1.5; }
+.paths li i { color: var(--accent); font-style: normal; padding: 0 2px; }
+pre.code { margin: 8px 0; padding: 12px 14px; background: var(--surface-2); border: 1px solid var(--hair); border-radius: 8px;
+  font: 12.5px/1.55 var(--mono); color: var(--ink); overflow-x: auto; white-space: pre; max-height: 360px; }
+.api-group { margin-bottom: 22px; }
+.api-group h3 { margin-bottom: 8px; }
+.ep { border: 1px solid var(--hair); border-radius: 10px; background: var(--surface); margin-bottom: 8px; }
+.ep summary { display: flex; align-items: center; gap: 12px; padding: 11px 14px; cursor: pointer; list-style: none; flex-wrap: wrap; }
+.ep summary::-webkit-details-marker { display: none; }
+.ep[open] summary { border-bottom: 1px solid var(--hair); }
+.verb { font: 700 11.5px/1 var(--mono); padding: 5px 0; width: 58px; text-align: center; border-radius: 6px; color: #fff; background: var(--accent); flex: none; }
+.verb.post { background: #1a8f63; } .verb.delete { background: var(--critical); }
+.ep .path { background: none; padding: 0; font-size: 13.5px; font-weight: 600; color: var(--ink); }
+.ep .sum { color: var(--ink-2); font-size: 14px; flex: 1 1 200px; }
+.ep .lock { color: var(--muted); display: inline-flex; }
+.ep-body { padding: 14px; display: grid; gap: 10px; }
+.ep-params { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+.ep-body input[type=text], .ep-body textarea { font: 13px var(--mono); padding: 7px 9px; border-radius: 8px; border: 1px solid var(--hair);
+  background: var(--surface); color: var(--ink); width: 100%; }
+.ep-body .row small { color: var(--muted); font-weight: 400; }
+.status-line { font-size: 13.5px; color: var(--ink-2); }
+.pp-banner { margin: 0 0 14px; }
+.pp-banner button { margin-top: 2px; }
+.pp-group { font: 600 11.5px/1 var(--text); color: var(--muted); padding: 10px 4px 2px; }
+.event-form { display: grid; gap: 10px; }
+.event-form textarea { font: 13px var(--mono); padding: 8px 10px; border-radius: 8px; border: 1px solid var(--hair); background: var(--surface); color: var(--ink); width: 100%; }
+@media (max-width: 1080px) {
+  .who { flex: none; padding: 6px 8px; margin: 0; }
+  .who label, .who p { display: none; }
+  .who select { font-size: 13px; padding: 5px 6px; width: 132px; }
+  .who form { position: absolute; right: 12px; top: 54px; background: var(--hero-bg); padding: 10px; border-radius: 10px; border: 1px solid var(--hero-line); width: 220px; z-index: 30; }
+  .figures.f4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .figures.f4 .fig:nth-child(3) { border-left: 0; }
+  .figures.f4 .fig:nth-child(n+3) { border-top: 1px solid var(--hair); }
+}
+@media (max-width: 760px) {
+  .figures.f4 { grid-template-columns: 1fr; }
+  .figures.f4 .fig { border-left: 0; }
+  .figures.f4 .fig:nth-child(n+2) { border-top: 1px solid var(--hair); }
+  .chart.net { height: 320px; }
+  .ep .sum { flex-basis: 100%; }
+}
+.fig .k { width: auto; height: auto; display: block; border-radius: 0; }
+.who form[hidden] { display: none; }
+.chart.net { height: 440px; }
+.g57 { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
+@media (max-width: 1080px) { .g57 { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 760px) { .chart.net { height: 330px; } }
+.g75 { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+@media (max-width: 1080px) { .g75 { grid-template-columns: minmax(0, 1fr); } }

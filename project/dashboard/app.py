@@ -29,7 +29,9 @@ from batterylife.lifecycle.grading import assess  # noqa: E402
 from batterylife.lifecycle.sustainability import value  # noqa: E402
 from batterylife.passport import crypto, store  # noqa: E402
 from batterylife.passport.ledger import _body, verify  # noqa: E402
-from batterylife.passport.schema import EVENT_TYPES, ROLES, SECTIONS  # noqa: E402
+from batterylife.passport.schema import EVENT_TYPES, PUBLIC, ROLES, SECTIONS  # noqa: E402
+from batterylife.service import auth, db  # noqa: E402
+from dashboard.api_v1 import api as api_v1  # noqa: E402
 
 def clean(o):
     """Make any result JSON-safe: NaN/inf -> null, numpy scalars -> Python."""
@@ -57,13 +59,17 @@ class SafeJSON(DefaultJSONProvider):
 
 app = Flask(__name__)
 app.json = SafeJSON(app)
+app.config["MAX_CONTENT_LENGTH"] = 6 * 1024 * 1024
+app.register_blueprint(api_v1)
 
 # sidebar navigation: (group, [(key, url, label, icon)])
 NAV_GROUPS = [
     ("Project", [("overview", "/", "Home", "home")]),
     ("Analytics", [("cells", "/cells", "Cells", "cell"), ("models", "/models", "Models", "chart"),
                    ("second_life", "/second-life", "Second life", "cycle")]),
-    ("Trust", [("passports", "/passports", "Passports", "doc")]),
+    ("Tools", [("assess", "/assess", "Assess your data", "upload")]),
+    ("Trust", [("passports", "/passports", "Passports", "doc"), ("network", "/network", "Network", "graph")]),
+    ("Developers", [("api", "/developers", "API", "code")]),
     ("Future", [("hardware", "/hardware", "Hardware", "chip")]),
     ("Project files", [("reports", "/reports", "Weekly reports", "file")]),
 ]
@@ -76,6 +82,9 @@ NAV_ICONS = {
     "doc": "M6 3h9l4 4v14H6zM14 3v5h5M9 12h7M9 16h7",
     "chip": "M7 7h10v10H7zM10 3v4m4-4v4m-4 10v4m4-4v4M3 10h4m-4 4h4m10-4h4m-4 4h4",
     "file": "M6 3h9l4 4v14H6zM14 3v5h5M9 17l2-2 2 2 3-4",
+    "upload": "M12 16V4m0 0-4 4m4-4 4 4M4 15v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4",
+    "graph": "M6 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm12 2a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM8 21a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm10-2a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM7.9 5.4l8.2 1.3M6.4 7l1.2 10m1.9 1.6 6.6-1.1M17.6 9l.2 6",
+    "code": "M8 7l-5 5 5 5m8-10 5 5-5 5M13.5 5l-3 14",
 }
 
 
@@ -168,6 +177,36 @@ def hardware_page():
 @app.get("/reports")
 def reports_page():
     return page("reports")
+
+
+@app.get("/assess")
+def assess_page():
+    return page("assess")
+
+
+@app.get("/network")
+def network_page():
+    return page("network")
+
+
+@app.get("/developers")
+def api_page():
+    return page("api")
+
+
+@app.get("/api/v1/docs")
+def api_docs_redirect():
+    from flask import redirect
+    return redirect("/developers")
+
+
+SAMPLES_DIR = ROOT / "data" / "samples"
+
+
+@app.get("/samples/<path:name>")
+def sample_file(name):
+    from flask import send_from_directory
+    return send_from_directory(SAMPLES_DIR, name, mimetype="text/csv")
 
 
 REPORTS_DIR = ROOT / "docs" / "reports"
@@ -300,43 +339,74 @@ def api_assess():
     return jsonify({**r.to_dict(), "value": value(r.grade, soh, b.get("dataset", "nasa"))})
 
 
+def _viewer():
+    """(user or None, may this request read restricted passport content?)"""
+    user = auth.user_from_header(request.headers.get("Authorization"))
+    return user, user is not None and auth.can(user["role"], "passport:read_full")
+
+
+@app.errorhandler(auth.AuthError)
+def _auth_error(e):
+    return jsonify({"error": e.message}), e.status
+
+
 @app.get("/api/passports")
 def api_passports():
-    d = DATA.fresh()
-    out = []
-    for pid in store.list_passports():
-        p = store.load_passport(pid)
-        v = verify(p, d.registry)
-        dec = p.sections()["lifecycle_decision"] or {}
-        out.append({"passport_id": pid, "battery_id": p.battery_id, "status": p.status(),
-                    "events": len(p.events), "valid": v["valid"], "grade": dec.get("grade"),
-                    "head_hash": p.head_hash})
-    return jsonify(out)
+    db.ensure()
+    _, full = _viewer()
+    conn = db.connect()
+    try:
+        reg, out = db.registry(conn), []
+        for row in db.list_passports(conn):
+            p = db.load_passport(conn, row["passport_id"])
+            out.append({"passport_id": p.passport_id, "battery_id": p.battery_id, "status": row["status"],
+                        "events": row["n_events"], "valid": verify(p, reg)["valid"], "origin": row["origin"],
+                        "grade": row["grade"] if full else None, "head_hash": row["head_hash"],
+                        "updated_at": row["updated_at"]})
+        return jsonify(out)
+    finally:
+        conn.close()
 
 
-def _passport_payload(p, access):
+def _load(pid):
+    db.ensure()
+    conn = db.connect()
+    try:
+        p = db.load_passport(conn, pid)
+        if p is None:
+            abort(404)
+        return p, db.registry(conn)
+    finally:
+        conn.close()
+
+
+def _passport_payload(p, access, reg):
     d = p.to_dict(access)
     d["status"] = p.status()
+    d["origin"] = db.passport_origin(p.passport_id)
     d["event_meta"] = {k: {"roles": sorted(v[0]), "access": v[1]} for k, v in EVENT_TYPES.items()}
     d["section_access"] = SECTIONS
-    d["actors"] = DATA.registry.to_dict()
+    d["actors"] = reg.to_dict()
     d["roles"] = ROLES
     return d
 
 
 @app.get("/api/passport/<pid>")
 def api_passport(pid):
-    if pid not in store.list_passports():
-        abort(404)
-    access = "public" if request.args.get("access") == "public" else "full"
-    return jsonify(_passport_payload(store.load_passport(pid), access))
+    p, reg = _load(pid)
+    _, full = _viewer()
+    if request.args.get("access") == "public":
+        return jsonify(_passport_payload(p, PUBLIC, reg))
+    if not full:
+        return jsonify({"error": "The full passport is restricted. Sign in with a role that has a legitimate "
+                                 "interest (for example recycler or regulator)."}), 403
+    return jsonify(_passport_payload(p, "full", reg))
 
 
 @app.post("/api/passport/<pid>/verify")
 def api_verify(pid):
-    if pid not in store.list_passports():
-        abort(404)
-    return jsonify(verify(store.load_passport(pid), DATA.fresh().registry))
+    p, reg = _load(pid)
+    return jsonify(verify(p, reg))
 
 
 ATTACKS = {
@@ -356,12 +426,12 @@ def api_attacks():
 @app.post("/api/passport/<pid>/tamper")
 def api_tamper(pid):
     """Apply an attack to an in-memory copy and verify it. Files are never changed."""
-    if pid not in store.list_passports():
-        abort(404)
     attack = (request.get_json(silent=True) or {}).get("attack", "edit")
     if attack not in ATTACKS:
         return jsonify({"error": f"unknown attack {attack}"}), 400
-    p = copy.deepcopy(store.load_passport(pid))
+    p, reg = _load(pid)
+    p = copy.deepcopy(p)
+    _, full = _viewer()
     ev = p.events
     soh_idx = next(e["index"] for e in ev if e["type"] == "SOH_ASSESSMENT")
     target = soh_idx
@@ -369,7 +439,8 @@ def api_tamper(pid):
     if attack in ("edit", "rehash"):
         old = ev[soh_idx]["data"]["soh"]
         ev[soh_idx]["data"]["soh"] = 0.99
-        detail = f"Event {soh_idx}: SOH changed from {old:.1%} to 99.0%"
+        detail = (f"Event {soh_idx}: SOH changed from {old:.1%} to 99.0%" if full
+                  else f"Event {soh_idx}: a restricted SOH value was raised to 99.0%")
         if attack == "rehash":
             prev = ev[soh_idx - 1]["hash"]
             for e in ev[soh_idx:]:
@@ -393,7 +464,7 @@ def api_tamper(pid):
         ev[target]["hash"] = crypto.sha256_hex(_body(ev[target]))
         ev[target]["signature"] = crypto.sign(key, ev[target]["hash"])
         detail = f"Event {target}: grade changed to A and re-signed with another actor's key"
-    result = verify(p, DATA.fresh().registry)
+    result = verify(p, reg)
     return jsonify({"attack": attack, "description": ATTACKS[attack], "detail": detail,
                     "target_index": target, "result": result,
                     "note": "Applied to an in-memory copy. The passport file is unchanged."})
@@ -402,4 +473,4 @@ def api_tamper(pid):
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8050))
     print(f"Battery lifecycle dashboard: http://127.0.0.1:{port}")
-    app.run(host="127.0.0.1", port=port, debug=False)
+    app.run(host=os.environ.get("HOST", "127.0.0.1"), port=port, debug=False)
